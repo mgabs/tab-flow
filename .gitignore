@@ -20,3 +20,7 @@ codesign.p12
 /config/local.xcconfig
 /scripts/l10n/missing-translations.json
 /ai/output/
+/fastlane/report.xml
+/fastlane/test_output/
+/vendor/bundle/
+/.worktrees/
