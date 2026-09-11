@@ -58,7 +58,7 @@ class PushToTalkController {
         let transition = PushToTalkControllerTestable.transition(state, event)
         state = transition.nextState
         perform(transition.sideEffect)
-        Menubar.refreshPushToTalkMenuItem(isArmed: isArmed, isTalking: isTalking)
+        Menubar.refreshPushToTalkIndicators(isArmed: isArmed, isTalking: isTalking)
         PushToTalkHUD.setVisible(isTalking)
     }
 

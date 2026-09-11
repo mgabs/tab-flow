@@ -7,6 +7,7 @@ class Menubar {
     private static var permissionCallout: PermissionCallout?
     private static var upgradeToProMenuItem: NSMenuItem!
     private static var pushToTalkMenuItem: NSMenuItem!
+    private static var pushToTalkStatusItem: NSStatusItem!
     private static var supportProjectMenuItem: NSMenuItem!
     private static var myAccountMenuItem: NSMenuItem!
     private static let menuDelegate = MenubarMenuDelegate()
@@ -25,7 +26,12 @@ class Menubar {
         return item
     }
 
-    static func refreshPushToTalkMenuItem(isArmed: Bool, isTalking: Bool) {
+    static func refreshPushToTalkIndicators(isArmed: Bool, isTalking: Bool) {
+        refreshPushToTalkMenuItem(isArmed: isArmed, isTalking: isTalking)
+        refreshPushToTalkStatusItem(isArmed: isArmed, isTalking: isTalking)
+    }
+
+    private static func refreshPushToTalkMenuItem(isArmed: Bool, isTalking: Bool) {
         guard let pushToTalkMenuItem else { return }
         pushToTalkMenuItem.title = isArmed
             ? NSLocalizedString("Push-to-talk: On", comment: "Menubar option")
@@ -36,6 +42,48 @@ class Menubar {
         if isTalking {
             pushToTalkMenuItem.image = pushToTalkMenuItem.image?.withSymbolConfiguration(.init(paletteColors: [.systemRed]))
         }
+    }
+
+    /// Dedicated always-visible menubar icon for push-to-talk, distinct from the app's main icon
+    /// and its dropdown row above: clicking it arms/disarms directly (`App.togglePushToTalkArmed`,
+    /// the same selector the dropdown row uses), so it also works as a mouse-only way to use
+    /// push-to-talk without ever binding a keyboard shortcut. Dimmed while disarmed ("off"),
+    /// full-tint while armed, red+filled while actively talking — mirrors the dropdown row's
+    /// mic/mic.slash/mic.fill logic but stays visible (dimmed) instead of only reflecting state
+    /// in a menu the user has to open. Deliberately not `.removalAllowed`: unlike the main status
+    /// item (which the user may choose to hide entirely), this one has no preference to hide it
+    /// behind, so it should never silently disappear.
+    private static func setupPushToTalkStatusItem() {
+        let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
+        item.button!.target = App.self
+        item.button!.action = #selector(App.togglePushToTalkArmed)
+        pushToTalkStatusItem = item
+        refreshPushToTalkStatusItem(isArmed: PushToTalkController.shared.isArmed, isTalking: PushToTalkController.shared.isTalking)
+    }
+
+    private static func refreshPushToTalkStatusItem(isArmed: Bool, isTalking: Bool) {
+        guard let button = pushToTalkStatusItem?.button else { return }
+        let stateDescription = isTalking
+            ? NSLocalizedString("Push-to-talk: Talking…", comment: "Menubar icon accessibility/tooltip")
+            : (isArmed
+                ? NSLocalizedString("Push-to-talk: On", comment: "Menubar icon accessibility/tooltip")
+                : NSLocalizedString("Push-to-talk: Off", comment: "Menubar icon accessibility/tooltip"))
+        button.toolTip = stateDescription
+        button.setAccessibilityLabel(stateDescription)
+        guard #available(macOS 11.0, *) else {
+            // `NSImage(systemSymbolName:)` needs macOS 11+; deployment target is 10.12. Falling
+            // back to text keeps the item non-empty rather than an invisible, unclickable blank
+            // button. See PushToTalkHUD.swift for the same, already-accepted tradeoff.
+            button.image = nil
+            button.title = "PTT"
+            return
+        }
+        let symbolName = isTalking ? "mic.fill" : (isArmed ? "mic" : "mic.slash")
+        button.title = ""
+        button.image = NSImage(systemSymbolName: symbolName, accessibilityDescription: stateDescription)
+        button.imageScaling = .scaleProportionallyUpOrDown
+        // No separate #available(macOS 10.14, *) needed: the guard above already requires 11.0+.
+        button.contentTintColor = isTalking ? .systemRed : (isArmed ? nil : .tertiaryLabelColor)
     }
 
     static func initialize() {
@@ -75,6 +123,7 @@ class Menubar {
         // invalidates NSStatusBarContentView mid-FBS-scene-update — `_NSDetectedLayoutRecursion`.
         applyMenubarIconPreferences()
         observeRemovalFromMenubar()
+        setupPushToTalkStatusItem()
         #if DEBUG
         installQAMenuMiddleClickMonitor()
         #endif
