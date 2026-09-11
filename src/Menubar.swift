@@ -195,7 +195,17 @@ class Menubar {
         if Preferences.menubarIconShown {
             loadPreferredIcon()
         } else {
+            disarmPushToTalkIfArmed()
             statusItem.isVisible = false
+        }
+    }
+
+    /// The menubar item is the only always-available way to disarm push-to-talk (the HUD shows only
+    /// while talking). Hiding the item while armed would leave the mic muted system-wide with no way
+    /// out short of quitting, so hiding always disarms first.
+    static private func disarmPushToTalkIfArmed() {
+        if PushToTalkController.shared.isArmed {
+            PushToTalkController.shared.toggleArmed()
         }
     }
 
@@ -206,6 +216,7 @@ class Menubar {
         statusItem.behavior = .removalAllowed
         isVisibleObserver = statusItem.observe(\.isVisible, options: [.old, .new]) { _, change in
             if change.oldValue == true && change.newValue == false {
+                disarmPushToTalkIfArmed()
                 Preferences.set("menubarIconShown", "false")
                 GeneralTab.menuIconShownToggle?.setSilently(.off)
             }
