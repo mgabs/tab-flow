@@ -205,62 +205,12 @@ class Menubar {
         }
     }
 
-    /// Whenever push-to-talk has a shortcut bound (`shortcutPreferenceChanged()` calls this on
-    /// bind/unbind, and `PushToTalkController.handle()` calls it on every arm/disarm/talk
-    /// transition), the main menu bar icon itself becomes the push-to-talk indicator instead of
-    /// the user's chosen icon — there is deliberately only ever one icon in the menubar for this
-    /// feature, not a second dedicated one. Falls back to the normal preferred icon once no
-    /// shortcut is bound.
+    /// The main menu bar icon is always the user's chosen static icon (`loadPreferredIcon`),
+    /// regardless of push-to-talk state — only the dropdown row (`refreshPushToTalkMenuItem`)
+    /// and the HUD (shown while talking) reflect push-to-talk status.
     static func refreshMainIcon() {
         guard statusItem != nil, Preferences.menubarIconShown else { return }
-        if isPushToTalkEnabled {
-            loadPushToTalkIcon()
-        } else {
-            loadPreferredIcon()
-        }
-    }
-
-    private static var isPushToTalkEnabled: Bool {
-        (Preferences.pushToTalkShortcut?.keyCode ?? .none) != .none
-    }
-
-    /// While disarmed: a small gearshape, prompting the user towards Settings to turn push-to-talk
-    /// on. While armed: a mic, dimmed at rest and brought to full brightness only while the
-    /// shortcut is actually held down (`isTalking`). Only shown at all while
-    /// `isPushToTalkEnabled` (see `refreshMainIcon`). Rendered smaller than the preferred icon
-    /// (`pushToTalkIconPointSize` vs the 22pt status bar band) since a small glyph reads better
-    /// than a full-bleed one for this transient, secondary indicator.
-    static private let pushToTalkIconPointSize = CGFloat(15)
-
-    static private func loadPushToTalkIcon() {
-        guard let button = statusItem.button else { return }
-        let isArmed = PushToTalkController.shared.isArmed
-        let isTalking = PushToTalkController.shared.isTalking
-        let stateDescription = !isArmed
-            ? NSLocalizedString("Push-to-talk: Off", comment: "Menubar icon accessibility/tooltip")
-            : (isTalking
-                ? NSLocalizedString("Push-to-talk: Talking…", comment: "Menubar icon accessibility/tooltip")
-                : NSLocalizedString("Push-to-talk: On", comment: "Menubar icon accessibility/tooltip"))
-        button.toolTip = stateDescription
-        button.setAccessibilityLabel(stateDescription)
-        statusItem.isVisible = true
-        guard #available(macOS 11.0, *) else {
-            // `NSImage(systemSymbolName:)` needs macOS 11+; deployment target is 10.12. Falling
-            // back to text keeps the item non-empty. See PushToTalkHUD.swift for the same,
-            // already-accepted tradeoff.
-            button.image = nil
-            button.title = "PTT"
-            return
-        }
-        let symbolName = isArmed ? "mic" : "gearshape"
-        let config = NSImage.SymbolConfiguration(pointSize: pushToTalkIconPointSize, weight: .regular)
-        button.title = ""
-        button.image = NSImage(systemSymbolName: symbolName, accessibilityDescription: stateDescription)?
-            .withSymbolConfiguration(config)
-        button.imageScaling = .scaleProportionallyUpOrDown
-        // No separate #available(macOS 10.14, *) needed: the guard above already requires 11.0+.
-        button.contentTintColor = isArmed ? (isTalking ? nil : .secondaryLabelColor) : nil
-        updateBadgeDotOverlay()
+        loadPreferredIcon()
     }
 
     /// The menubar item is the only always-available way to disarm push-to-talk (the HUD shows only

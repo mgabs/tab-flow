@@ -38,9 +38,6 @@ class PushToTalkController {
         if isTalking {
             handle(.keyUp)
         }
-        // Binding/unbinding flips whether the main menu bar icon shows the mic indicator at all
-        // (`Menubar.isPushToTalkEnabled`), independent of any state-machine transition above.
-        defer { Menubar.refreshMainIcon() }
         guard let shortcut = Preferences.pushToTalkShortcut else {
             PushToTalkHotkey.unregister()
             return
