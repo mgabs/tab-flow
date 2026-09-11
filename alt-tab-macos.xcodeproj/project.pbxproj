@@ -189,6 +189,7 @@
 		5FA004000000000000000004 /* ProTransitionManagerTestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA004000000000000000001 /* ProTransitionManagerTestable.swift */; };
 		5FA004000000000000000005 /* ProTransitionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA004000000000000000002 /* ProTransitionTests.swift */; };
 		279727AB4D4CDA0AD19CAE10 /* PushToTalkControllerTestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B44FD6F6D57123F37833627 /* PushToTalkControllerTestable.swift */; };
+		A7D5663E365B44549860548A /* PushToTalkControllerTestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B44FD6F6D57123F37833627 /* PushToTalkControllerTestable.swift */; };
 		B2B3A2F688B1C44D7444247B /* PushToTalkControllerTestableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFD360D22E7D59F236722B3 /* PushToTalkControllerTestableTests.swift */; };
 		5FA004000000000000000007 /* UsageStatsMessageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA004000000000000000006 /* UsageStatsMessageTests.swift */; };
 		5FA1E0B22F50000100A1A1A1 /* PreferencesEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA1E0B12F50000100A1A1A1 /* PreferencesEvents.swift */; };
@@ -2173,6 +2174,7 @@
 				BF0C87B5EDCFC573CE220137 /* Helpers.swift in Sources */,
 				5FA004000000000000000004 /* ProTransitionManagerTestable.swift in Sources */,
 				5FA004000000000000000005 /* ProTransitionTests.swift in Sources */,
+				A7D5663E365B44549860548A /* PushToTalkControllerTestable.swift in Sources */,
 				B2B3A2F688B1C44D7444247B /* PushToTalkControllerTestableTests.swift in Sources */,
 				AA0C8B000000000000000005 /* UsageStatsTestable.swift in Sources */,
 				5FA004000000000000000007 /* UsageStatsMessageTests.swift in Sources */,

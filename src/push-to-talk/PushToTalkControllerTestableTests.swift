@@ -1,5 +1,4 @@
 import XCTest
-@testable import AltTab
 
 class PushToTalkControllerTestableTests: XCTestCase {
     typealias State = PushToTalkControllerTestable.State
