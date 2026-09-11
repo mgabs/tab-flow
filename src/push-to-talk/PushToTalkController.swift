@@ -32,6 +32,12 @@ class PushToTalkController {
     /// Re-registers the global hotkey from the current `pushToTalkShortcut` preference. Call once
     /// at startup (from `PreferencesEvents.initialize()`) and again whenever the preference changes.
     func shortcutPreferenceChanged() {
+        // Carbon never delivers `kEventHotKeyReleased` for a hotkey that got unregistered mid-hold,
+        // so the old shortcut's key-up has to be synthesized before the old registration goes away,
+        // or the state machine stays in `.armedTalking` and the mic stays unmuted indefinitely.
+        if isTalking {
+            handle(.keyUp)
+        }
         guard let shortcut = Preferences.pushToTalkShortcut else {
             PushToTalkHotkey.unregister()
             return

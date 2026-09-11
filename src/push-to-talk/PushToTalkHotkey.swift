@@ -45,9 +45,8 @@ class PushToTalkHotkey {
             InstallEventHandler(eventTarget, { (_: EventHandlerCallRef?, event: EventRef?, _: UnsafeMutableRawPointer?) -> OSStatus in
                 var id = EventHotKeyID()
                 GetEventParameter(event, EventParamName(kEventParamDirectObject), EventParamType(typeEventHotKeyID), nil, MemoryLayout<EventHotKeyID>.size, nil, &id)
-                if id.signature == PushToTalkHotkey.signature && id.id == PushToTalkHotkey.hotkeyId.id {
-                    PushToTalkHotkey.onPress?()
-                }
+                guard id.signature == PushToTalkHotkey.signature && id.id == PushToTalkHotkey.hotkeyId.id else { return OSStatus(eventNotHandledErr) }
+                PushToTalkHotkey.onPress?()
                 return noErr
             }, eventTypes.count, &eventTypes, nil, &pressedHandler)
         }
@@ -56,9 +55,8 @@ class PushToTalkHotkey {
             InstallEventHandler(eventTarget, { (_: EventHandlerCallRef?, event: EventRef?, _: UnsafeMutableRawPointer?) -> OSStatus in
                 var id = EventHotKeyID()
                 GetEventParameter(event, EventParamName(kEventParamDirectObject), EventParamType(typeEventHotKeyID), nil, MemoryLayout<EventHotKeyID>.size, nil, &id)
-                if id.signature == PushToTalkHotkey.signature && id.id == PushToTalkHotkey.hotkeyId.id {
-                    PushToTalkHotkey.onRelease?()
-                }
+                guard id.signature == PushToTalkHotkey.signature && id.id == PushToTalkHotkey.hotkeyId.id else { return OSStatus(eventNotHandledErr) }
+                PushToTalkHotkey.onRelease?()
                 return noErr
             }, eventTypes.count, &eventTypes, nil, &releasedHandler)
         }
