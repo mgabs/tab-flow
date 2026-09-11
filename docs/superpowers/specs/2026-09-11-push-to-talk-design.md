@@ -111,11 +111,20 @@ volume), regardless of current sub-state.
 
 ### Global shortcut integration
 
-Reuses `KeyboardEvents.addGlobalShortcut`/`removeGlobalShortcut`, which already
-provide press *and* release callbacks via Carbon `EventHotKey` (the same
-mechanism driving the switcher's existing hold-shortcut). The push-to-talk
-shortcut is registered independently of `SwitcherSession` — it is active
-whenever armed, regardless of whether the switcher UI is open.
+`KeyboardEvents.swift`'s Carbon `EventHotKey` registration is not a generic
+reusable entry point: `KeyboardEventsTestable.globalShortcutsIds` only allocates
+numeric hotkey IDs for `nextWindowShortcut*`/`holdShortcut*`, and every match
+routes through `ATShortcut.shouldTrigger()`/`executeAction()`, which is gated on
+`SwitcherSession.current` and dispatches to `ShortcutActions.execute(id)` — both
+switcher-specific. Push-to-talk needs to fire regardless of switcher/session
+state, so it registers its **own**, independent Carbon `RegisterEventHotKey`
+pair (a new small `PushToTalkHotkey` type, same underlying Carbon APIs
+`KeyboardEvents.swift` uses, but its own `EventHotKeyID`/`InstallEventHandler`),
+bypassing `ControlsTab.shortcuts`/`ATShortcut`/`KeyboardEventsTestable` entirely.
+The Preferences UI still reuses `CustomRecorderControl` for the shortcut-capture
+widget and the generic `Preferences.setShortcut`/`Preferences.shortcut(_:)`
+storage (that read/write path is generic, not `ControlsTab`-specific) — only the
+runtime hotkey *registration* is a standalone component.
 
 ### Failure handling
 
