@@ -191,6 +191,7 @@
 		279727AB4D4CDA0AD19CAE10 /* PushToTalkControllerTestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B44FD6F6D57123F37833627 /* PushToTalkControllerTestable.swift */; };
 		F44320D028A9454C990E3397 /* PushToTalkAudioDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD2F77CFA094913934F18CB /* PushToTalkAudioDevice.swift */; };
 		9C3A56E1B3AD4B198B9C2F0E /* PushToTalkHotkey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2D48A1F5C64D3E9A6B10CF /* PushToTalkHotkey.swift */; };
+		6F766002AD9A4651A5BFB16D /* PushToTalkHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = A063E7383C2E4734A74C9A59 /* PushToTalkHUD.swift */; };
 		A7D5663E365B44549860548A /* PushToTalkControllerTestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B44FD6F6D57123F37833627 /* PushToTalkControllerTestable.swift */; };
 		B2B3A2F688B1C44D7444247B /* PushToTalkControllerTestableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFD360D22E7D59F236722B3 /* PushToTalkControllerTestableTests.swift */; };
 		5FA004000000000000000007 /* UsageStatsMessageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA004000000000000000006 /* UsageStatsMessageTests.swift */; };
@@ -593,6 +594,7 @@
 		3B44FD6F6D57123F37833627 /* PushToTalkControllerTestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushToTalkControllerTestable.swift; sourceTree = "<group>"; };
 		1BD2F77CFA094913934F18CB /* PushToTalkAudioDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushToTalkAudioDevice.swift; sourceTree = "<group>"; };
 		7E2D48A1F5C64D3E9A6B10CF /* PushToTalkHotkey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushToTalkHotkey.swift; sourceTree = "<group>"; };
+		A063E7383C2E4734A74C9A59 /* PushToTalkHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushToTalkHUD.swift; sourceTree = "<group>"; };
 		6FFD360D22E7D59F236722B3 /* PushToTalkControllerTestableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushToTalkControllerTestableTests.swift; sourceTree = "<group>"; };
 		13471CAC0BCD29A19A000223 /* PushToTalkControllerTestableSpecs.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = PushToTalkControllerTestableSpecs.md; sourceTree = "<group>"; };
 		5FA004000000000000000006 /* UsageStatsMessageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsageStatsMessageTests.swift; sourceTree = "<group>"; };
@@ -1600,6 +1602,7 @@
 				3B44FD6F6D57123F37833627 /* PushToTalkControllerTestable.swift */,
 				1BD2F77CFA094913934F18CB /* PushToTalkAudioDevice.swift */,
 				7E2D48A1F5C64D3E9A6B10CF /* PushToTalkHotkey.swift */,
+				A063E7383C2E4734A74C9A59 /* PushToTalkHUD.swift */,
 				13471CAC0BCD29A19A000223 /* PushToTalkControllerTestableSpecs.md */,
 				6FFD360D22E7D59F236722B3 /* PushToTalkControllerTestableTests.swift */,
 			);
@@ -2292,6 +2295,7 @@
 				279727AB4D4CDA0AD19CAE10 /* PushToTalkControllerTestable.swift in Sources */,
 				F44320D028A9454C990E3397 /* PushToTalkAudioDevice.swift in Sources */,
 				9C3A56E1B3AD4B198B9C2F0E /* PushToTalkHotkey.swift in Sources */,
+				6F766002AD9A4651A5BFB16D /* PushToTalkHUD.swift in Sources */,
 				5FA002000000000000000011 /* ProFeature.swift in Sources */,
 				5FA002000000000000000012 /* ProPromptWindow.swift in Sources */,
 				5FA002000000000000000013 /* ProPromptPopover.swift in Sources */,
