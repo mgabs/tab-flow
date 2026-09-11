@@ -135,6 +135,10 @@ class App: AppCenterApplication {
         showPermissionsWindow()
     }
 
+    @objc static func togglePushToTalkArmed() {
+        PushToTalkController.shared.toggleArmed()
+    }
+
     @objc static func supportProject() {
         NSWorkspace.shared.open(URL(string: Endpoints.supportUrl)!)
     }

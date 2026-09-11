@@ -6,6 +6,7 @@ class Menubar {
     static var permissionCalloutMenuItems: [NSMenuItem]?
     private static var permissionCallout: PermissionCallout?
     private static var upgradeToProMenuItem: NSMenuItem!
+    private static var pushToTalkMenuItem: NSMenuItem!
     private static var supportProjectMenuItem: NSMenuItem!
     private static var myAccountMenuItem: NSMenuItem!
     private static let menuDelegate = MenubarMenuDelegate()
@@ -24,6 +25,19 @@ class Menubar {
         return item
     }
 
+    static func refreshPushToTalkMenuItem(isArmed: Bool, isTalking: Bool) {
+        guard let pushToTalkMenuItem else { return }
+        pushToTalkMenuItem.title = isArmed
+            ? NSLocalizedString("Push-to-talk: On", comment: "Menubar option")
+            : NSLocalizedString("Push-to-talk: Off", comment: "Menubar option")
+        guard #available(macOS 26.0, *) else { return }
+        let symbolName = isTalking ? "mic.fill" : (isArmed ? "mic" : "mic.slash")
+        pushToTalkMenuItem.image = NSImage(systemSymbolName: symbolName, accessibilityDescription: nil)
+        if isTalking {
+            pushToTalkMenuItem.image = pushToTalkMenuItem.image?.withSymbolConfiguration(.init(paletteColors: [.systemRed]))
+        }
+    }
+
     static func initialize() {
         menu = NSMenu()
         menu.title = App.name // perf: prevent going through expensive code-path within appkit
@@ -39,6 +53,7 @@ class Menubar {
         addMenuItem(NSLocalizedString("Settings…", comment: "Menubar option"), #selector(App.showSettingsWindow), ",", "gear", nil, App.self)
         addMenuItem(NSLocalizedString("Check for updates…", comment: "Menubar option"), #selector(App.checkForUpdatesNow), "", "checkmark.arrow.trianglehead.clockwise", nil, App.self)
         addMenuItem(NSLocalizedString("Check permissions…", comment: "Menubar option"), #selector(App.checkPermissions), "", "hand.raised", nil, App.self)
+        pushToTalkMenuItem = addMenuItem(NSLocalizedString("Push-to-talk: Off", comment: "Menubar option"), #selector(App.togglePushToTalkArmed), "", "mic.slash", nil, App.self)
         menu.addItem(NSMenuItem.separator())
         addMenuItem(String(format: NSLocalizedString("About %@", comment: "Menubar option. %@ is AltTab"), App.name), #selector(App.showAboutWindow), "", "info.circle", nil, App.self)
         addMenuItem(NSLocalizedString("Debug tools", comment: "Menubar option"), #selector(App.showDebugWindow), "", "scope", nil, App.self)
