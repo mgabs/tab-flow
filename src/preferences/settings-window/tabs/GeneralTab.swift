@@ -6,6 +6,7 @@ class GeneralTab {
     static var menuIconShownToggle: Switch?
     static var updatesPolicyDropdown: NSPopUpButton?
     static var crashPolicyDropdown: NSPopUpButton?
+    static var pushToTalkRecorder: CustomRecorderControl?
     static var policyLock = false
 
     static func initTab() -> NSView {
@@ -39,6 +40,13 @@ class GeneralTab {
         let captureWindowsInBackground = TableGroupView.Row(leftTitle: NSLocalizedString("Capture windows in the background", comment: ""),
             subTitle: NSLocalizedString("When disabled, avoids the macOS purple screen-recording indicator, and avoids flickers when playing DRM video. Thumbnails will be less up-to-date.", comment: ""),
             rightViews: [LabelAndControl.makeSwitch("captureWindowsInBackground")])
+        pushToTalkRecorder = CustomRecorderControl(Preferences.pushToTalkShortcut, true, "pushToTalkShortcut")
+        _ = LabelAndControl.setupControl(pushToTalkRecorder!, "pushToTalkShortcut", extraAction: { _ in
+            PushToTalkController.shared.shortcutPreferenceChanged()
+        })
+        let pushToTalk = TableGroupView.Row(leftTitle: NSLocalizedString("Push-to-talk shortcut", comment: ""),
+            subTitle: NSLocalizedString("Hold this shortcut to unmute your microphone. Arm/disarm push-to-talk from the menu bar.", comment: ""),
+            rightViews: [pushToTalkRecorder!])
         let table = TableGroupView(width: SettingsWindow.contentWidth)
         table.addRow(startAtLogin)
         table.addRow(menubarIcon)
@@ -52,6 +60,8 @@ class GeneralTab {
             secondaryViewsAlignment: .right,
             secondaryViewsTopGap: 8)
         table.addRow(crashPolicy)
+        table.addNewTable()
+        table.addRow(pushToTalk)
         let exportButton = NSButton(title: NSLocalizedString("Export settings…", comment: ""), target: nil, action: nil)
         exportButton.onAction = { _ in exportSettings() }
         let importButton = NSButton(title: NSLocalizedString("Import settings…", comment: ""), target: nil, action: nil)
@@ -70,6 +80,7 @@ class GeneralTab {
         menuIconShownToggle = nil
         updatesPolicyDropdown = nil
         crashPolicyDropdown = nil
+        pushToTalkRecorder = nil
     }
 
     static func refreshControlsFromPreferences() {

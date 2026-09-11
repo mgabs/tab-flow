@@ -43,6 +43,7 @@ class PreferencesEvents {
         initialized = true
         UserDefaultsEvents.observe()
         ControlsTab.initializePreferencesDependentState()
+        PushToTalkController.shared.shortcutPreferenceChanged()
         applyUpdatePolicyPreference()
         TrackpadEvents.toggle(Preferences.nextWindowGesture != .disabled)
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
@@ -65,6 +66,7 @@ class PreferencesEvents {
         ControlsTab.preferenceChanged(key)
         switch key {
         case "menubarIcon", "menubarIconShown": applyMenubarPreferencesIfReady()
+        case "pushToTalkShortcut": PushToTalkController.shared.shortcutPreferenceChanged()
         case "nextWindowGesture": TrackpadEvents.toggle(Preferences.nextWindowGesture != .disabled)
         case "startAtLogin": LoginItem.applyCurrentPreference()
         case "updatePolicy": applyUpdatePolicyPreference()
