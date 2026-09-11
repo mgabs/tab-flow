@@ -38,6 +38,13 @@ class PushToTalkHUD {
         background.layer?.cornerRadius = 14
         background.layer?.masksToBounds = true
         let icon = NSImageView(frame: NSRect(x: (width - 24) / 2, y: 22, width: 24, height: 24))
+        // `NSImage(systemSymbolName:)` is macOS 11+; the app's deployment target is 10.12, so
+        // this leaves the icon blank pre-11.0. The codebase's real, OS-version-independent
+        // answer to this is `NSImage.fromSymbol` (HelperExtensions.swift) drawing from the
+        // subsetted `resources/SF-Pro-Text-Regular.otf`, but adding a new glyph (e.g. `.mic`)
+        // to that font requires SF Symbols.app to regenerate the subset via
+        // scripts/assets/subset_font.sh — not available in every dev environment. Migrating
+        // this icon to `fromSymbol` is a known follow-up, not the final intended design.
         if #available(macOS 11.0, *) {
             icon.image = NSImage(systemSymbolName: "mic.fill", accessibilityDescription: nil)
         }
