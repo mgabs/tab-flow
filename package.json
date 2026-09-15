@@ -29,7 +29,7 @@
     "husky": "^3.0.4",
     "lint-staged": "^13.0.0",
     "marked": "^0.8.0",
-    "semantic-release": "^15.13.24"
+    "semantic-release": "^25.0.9"
   },
   "engines": {
     "node": ">=18.0.0"
