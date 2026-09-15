@@ -11,6 +11,17 @@ This project has minimal dependency on Xcode-only features (e.g. InterfaceBuilde
 * `scripts/codesign/setup_local.sh` to generate a local self-signed certificate, to avoid having to re-check the `System Preferences > Security & Privacy` permissions on every build
 * Either open `alt-tab-macos.xcodeproj` with Xcode, or use the CLI: `xcodebuild -project alt-tab-macos.xcodeproj -scheme Debug` to build the .app with the `Debug` build configuration
 
+## Releasing the project
+
+Release automation (build, test, codesign, notarize, publish) is driven by [fastlane](https://fastlane.tools) (`fastlane/Fastfile`). CI runs `bundle exec fastlane release` on every push to `master`, orchestrating the same scripts under `scripts/` that were previously called directly from `.github/workflows/ci_cd.yml`.
+
+To try a Release build locally (e.g. to test the notarization step), install the gems once with `bundle install`, then run:
+
+* `bundle exec fastlane test` — runs the `Test` scheme (same as CI)
+* `bundle exec fastlane local_release` — builds the `Release` scheme; if `APPLE_ID`/`APPLE_PASSWORD`/`APPLE_TEAM_ID` (a real Developer ID certificate + app-specific password) are set, it also notarizes and staples the result. A `Local Self-Signed` cert (see above) cannot be notarized by Apple, so without those variables set the lane only builds+signs.
+
+Run `bundle exec fastlane lanes` for the full list of lanes.
+
 ## Mac development
 
 Mac development ecosystem is pretty terrible in general. They keep piling on the tech stacks on top of each other, so you have C APIs, ObjC APIs, Swift APIs, Interface builder, Playgrounds, Swift UI, Mac Catalyst. All these are bridging with each other with a bunch of macros, SDKs glue, compiler flags, compatibility mode, XCode legacy build system, etc. For alt-tab, we are on Swift 5.0. Note that swift just recently started being stable, but overall any change of version breaks a lot of stuff. Swift itself is the mainstream language with the worst governance I’ve seen in modern times.

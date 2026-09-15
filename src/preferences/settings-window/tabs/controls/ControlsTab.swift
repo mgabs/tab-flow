@@ -805,6 +805,10 @@ class ControlsTab {
 
     @objc static func shortcutChangedCallback(_ sender: NSControl) {
         let controlId = sender.identifier!.rawValue
+        // Shortcut controls outside this tab's registry (e.g. `pushToTalkShortcut`) can reach here
+        // through `CustomRecorderControl`'s conflict-resolution path; registering them as `.local`
+        // entries would leave a stale binding that also skews `recomputeEscapeAbsorption`.
+        guard staticShortcutLabels[controlId] != nil || isShortcutPreferenceKey(controlId) else { return }
         if isShortcutPreferenceKey(controlId) && Preferences.nameToIndex(controlId) >= Preferences.shortcutCount {
             return
         }

@@ -1,0 +1,62 @@
+default_platform(:mac)
+
+XCODE_PROJECT = "alt-tab-macos.xcodeproj"
+DERIVED_DATA_PATH = "DerivedData"
+APP_NAME = ENV["APP_NAME"] || "AltTab"
+XCODE_BUILD_PATH = ENV["XCODE_BUILD_PATH"] || "#{DERIVED_DATA_PATH}/Build/Products/Release"
+VERSION_FILE = ENV["VERSION_FILE"] || "VERSION.txt"
+
+platform :mac do
+  desc "Run the Test scheme (Release configuration, mirrors CI)"
+  lane :test do
+    run_tests(
+      project: XCODE_PROJECT,
+      scheme: "Test",
+      configuration: "Release",
+      derived_data_path: DERIVED_DATA_PATH,
+      xcodebuild_formatter: "scripts/xcbeautify"
+    )
+  end
+
+  desc "Build the Release scheme. Pass code_sign_identity:/current_project_version: to override release.xcconfig's real Developer ID " \
+       "and the CI-only VERSION_FILE injection (e.g. for local testing)"
+  lane :build do |options|
+    overrides = []
+    overrides << "CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY='#{options[:code_sign_identity]}'" if options[:code_sign_identity]
+    overrides << "CURRENT_PROJECT_VERSION='#{options[:current_project_version]}'" if options[:current_project_version]
+    override = overrides.join(" ")
+    # `sh` runs from fastlane/, but build_app.sh's own relative paths (scripts/xcbeautify, $XCODE_BUILD_PATH, ...) assume repo root
+    sh("cd .. && set -o pipefail && xcodebuild -project #{XCODE_PROJECT} -scheme Release -derivedDataPath #{DERIVED_DATA_PATH} #{override} | scripts/xcbeautify")
+    sh("cd .. && file '#{XCODE_BUILD_PATH}/#{APP_NAME}.app/Contents/MacOS/#{APP_NAME}'")
+  end
+
+  desc "Notarize+staple the built .app and zip it. Requires a real Developer ID cert plus APPLE_ID/APPLE_PASSWORD/APPLE_TEAM_ID " \
+       "(an app-specific password, not the Apple ID password); Apple will reject a Local Self-Signed build"
+  lane :notarize_and_package do
+    sh("cd .. && scripts/package_and_notarize_release.sh")
+  end
+
+  desc "Full production release pipeline, as run by CI on every push to master"
+  lane :release do
+    sh("cd .. && scripts/replace_environment_variables_in_app.sh")
+    test
+    build
+    notarize_and_package
+    sh("cd .. && scripts/upload_symbols_to_appcenter.sh")
+    sh("cd .. && scripts/update_appcast.sh")
+    sh("cd .. && scripts/update_readme_and_website.sh")
+  end
+
+  desc "Build a Release .app locally for manual testing/distribution, signed with the Local Self-Signed dev cert unless " \
+       "real Apple credentials are set. Notarizes too if APPLE_ID/APPLE_PASSWORD/APPLE_TEAM_ID (a real Developer ID cert) are set"
+  lane :local_release do
+    version = File.exist?(VERSION_FILE) ? File.read(VERSION_FILE).strip : "0.0.0-local"
+    if ENV["APPLE_ID"] && ENV["APPLE_PASSWORD"] && ENV["APPLE_TEAM_ID"]
+      build(current_project_version: version)
+      notarize_and_package
+    else
+      UI.important("No APPLE_ID/APPLE_PASSWORD/APPLE_TEAM_ID set: building with the Local Self-Signed dev cert and skipping notarization (Apple can't notarize a self-signed build)")
+      build(code_sign_identity: "Local Self-Signed", current_project_version: version)
+    end
+  end
+end

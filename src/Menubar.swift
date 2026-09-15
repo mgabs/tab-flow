@@ -6,6 +6,7 @@ class Menubar {
     static var permissionCalloutMenuItems: [NSMenuItem]?
     private static var permissionCallout: PermissionCallout?
     private static var upgradeToProMenuItem: NSMenuItem!
+    private static var pushToTalkMenuItem: NSMenuItem!
     private static var supportProjectMenuItem: NSMenuItem!
     private static var myAccountMenuItem: NSMenuItem!
     private static let menuDelegate = MenubarMenuDelegate()
@@ -24,6 +25,24 @@ class Menubar {
         return item
     }
 
+    static func refreshPushToTalkIndicators(isArmed: Bool, isTalking: Bool) {
+        refreshPushToTalkMenuItem(isArmed: isArmed, isTalking: isTalking)
+        refreshMainIcon()
+    }
+
+    private static func refreshPushToTalkMenuItem(isArmed: Bool, isTalking: Bool) {
+        guard let pushToTalkMenuItem else { return }
+        pushToTalkMenuItem.title = isArmed
+            ? NSLocalizedString("Push-to-talk: On", comment: "Menubar option")
+            : NSLocalizedString("Push-to-talk: Off", comment: "Menubar option")
+        guard #available(macOS 26.0, *) else { return }
+        let symbolName = isTalking ? "mic.fill" : (isArmed ? "mic" : "mic.slash")
+        pushToTalkMenuItem.image = NSImage(systemSymbolName: symbolName, accessibilityDescription: nil)
+        if isTalking {
+            pushToTalkMenuItem.image = pushToTalkMenuItem.image?.withSymbolConfiguration(.init(paletteColors: [.systemRed]))
+        }
+    }
+
     static func initialize() {
         menu = NSMenu()
         menu.title = App.name // perf: prevent going through expensive code-path within appkit
@@ -39,6 +58,7 @@ class Menubar {
         addMenuItem(NSLocalizedString("Settings…", comment: "Menubar option"), #selector(App.showSettingsWindow), ",", "gear", nil, App.self)
         addMenuItem(NSLocalizedString("Check for updates…", comment: "Menubar option"), #selector(App.checkForUpdatesNow), "", "checkmark.arrow.trianglehead.clockwise", nil, App.self)
         addMenuItem(NSLocalizedString("Check permissions…", comment: "Menubar option"), #selector(App.checkPermissions), "", "hand.raised", nil, App.self)
+        pushToTalkMenuItem = addMenuItem(NSLocalizedString("Push-to-talk: Off", comment: "Menubar option"), #selector(App.togglePushToTalkArmed), "", "mic.slash", nil, App.self)
         menu.addItem(NSMenuItem.separator())
         addMenuItem(String(format: NSLocalizedString("About %@", comment: "Menubar option. %@ is AltTab"), App.name), #selector(App.showAboutWindow), "", "info.circle", nil, App.self)
         addMenuItem(NSLocalizedString("Debug tools", comment: "Menubar option"), #selector(App.showDebugWindow), "", "scope", nil, App.self)
@@ -178,9 +198,27 @@ class Menubar {
 
     static private func applyMenubarIconPreferences() {
         if Preferences.menubarIconShown {
-            loadPreferredIcon()
+            refreshMainIcon()
         } else {
+            disarmPushToTalkIfArmed()
             statusItem.isVisible = false
+        }
+    }
+
+    /// The main menu bar icon is always the user's chosen static icon (`loadPreferredIcon`),
+    /// regardless of push-to-talk state — only the dropdown row (`refreshPushToTalkMenuItem`)
+    /// and the HUD (shown while talking) reflect push-to-talk status.
+    static func refreshMainIcon() {
+        guard statusItem != nil, Preferences.menubarIconShown else { return }
+        loadPreferredIcon()
+    }
+
+    /// The menubar item is the only always-available way to disarm push-to-talk (the HUD shows only
+    /// while talking). Hiding the item while armed would leave the mic muted system-wide with no way
+    /// out short of quitting, so hiding always disarms first.
+    static private func disarmPushToTalkIfArmed() {
+        if PushToTalkController.shared.isArmed {
+            PushToTalkController.shared.toggleArmed()
         }
     }
 
@@ -191,6 +229,7 @@ class Menubar {
         statusItem.behavior = .removalAllowed
         isVisibleObserver = statusItem.observe(\.isVisible, options: [.old, .new]) { _, change in
             if change.oldValue == true && change.newValue == false {
+                disarmPushToTalkIfArmed()
                 Preferences.set("menubarIconShown", "false")
                 GeneralTab.menuIconShownToggle?.setSilently(.off)
             }

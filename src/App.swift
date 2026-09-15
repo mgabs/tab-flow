@@ -135,6 +135,10 @@ class App: AppCenterApplication {
         showPermissionsWindow()
     }
 
+    @objc static func togglePushToTalkArmed() {
+        PushToTalkController.shared.toggleArmed()
+    }
+
     @objc static func supportProject() {
         NSWorkspace.shared.open(URL(string: Endpoints.supportUrl)!)
     }
@@ -621,6 +625,8 @@ extension App: NSApplicationDelegate {
     }
 
     func applicationWillTerminate(_ notification: Notification) {
+        // the mic mute we own is system-wide and outlives the app; restore it first thing on teardown
+        PushToTalkController.shared.restoreOnQuit()
         // symbolic hotkeys state persist after the app is quit; we restore this shortcut before quitting
         setNativeCommandTabEnabled(true)
         // usage counters are appended in memory and written back on a debounce; land the pending ones
