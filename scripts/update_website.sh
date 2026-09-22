@@ -7,4 +7,4 @@ if [ -z "${GH_TOKEN:-}" ]; then
   exit 0
 fi
 
-gh api "repos/${GITHUB_REPOSITORY:-mgabs/alt-tab}-website/dispatches" -f event_type=update-website
+gh api "repos/${GITHUB_REPOSITORY:-mgabs/alt-tab-macos}-website/dispatches" -f event_type=update-website

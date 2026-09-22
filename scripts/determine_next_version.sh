@@ -2,7 +2,14 @@
 
 set -exu
 
-semanticRelease=$(npx semantic-release --dry-run --ci false 2>&1)
-version=$(echo "$semanticRelease" | sed -nE 's/.*(The next release version is |Published release |Skip v)([0-9]+\.[0-9]+\.[0-9]+).*/\2/p' | head -n 1)
+if [ -n "${GITHUB_REF_NAME:-}" ] && [[ "${GITHUB_REF:-}" == refs/tags/* ]]; then
+  version="${GITHUB_REF_NAME#v}"
+elif [[ "${GITHUB_REF:-}" =~ ^refs/tags/v?(.*) ]]; then
+  version="${BASH_REMATCH[1]}"
+elif [ -n "${GITHUB_REF_NAME:-}" ] && [[ "$GITHUB_REF_NAME" =~ ^v?[0-9]+\.[0-9]+ ]]; then
+  version="${GITHUB_REF_NAME#v}"
+else
+  version="1.0.0"
+fi
 
 echo "$version" > "$VERSION_FILE"
