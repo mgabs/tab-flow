@@ -1912,7 +1912,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 1620;
-				ORGANIZATIONNAME = lwouis;
+				ORGANIZATIONNAME = mgabs;
 			};
 			buildConfigurationList = D04BA83C9495F252D87CDF0F /* Build configuration list for PBXProject "alt-tab-macos" */;
 			compatibilityVersion = "Xcode 3.2";

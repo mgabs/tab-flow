@@ -2,7 +2,7 @@
 
 set -exu
 
-githubRepo="${GITHUB_REPOSITORY:-lwouis/alt-tab-macos}"
+githubRepo="${GITHUB_REPOSITORY:-mgabs/alt-tab}"
 
 github_api_request() {
   local url="$1"
