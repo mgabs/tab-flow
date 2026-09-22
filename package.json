@@ -20,7 +20,7 @@
     "format:check": "node scripts/swiftformat.js --lint"
   },
   "devDependencies": {
-    "@commitlint/cli": "^8.1.0",
+    "@commitlint/cli": "^21.2.3",
     "@commitlint/config-conventional": "^8.1.0",
     "@semantic-release/changelog": "^3.0.4",
     "@semantic-release/git": "^7.0.16",
