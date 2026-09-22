@@ -63,9 +63,7 @@ jobs:
           fi
       - run: scripts/ensure_generated_files_are_up_to_date.sh
       - run: scripts/determine_next_version.sh
-        if: github.event_name == 'push'
       - run: scripts/replace_environment_variables_in_app.sh
-        if: github.event_name == 'push'
       - run: scripts/codesign/setup_ci_master.sh
         if: github.event_name == 'push'
       - run: scripts/run_tests.sh
