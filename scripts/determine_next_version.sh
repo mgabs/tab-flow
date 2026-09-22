@@ -2,7 +2,7 @@
 
 set -exu
 
-semanticRelease=$(npx semantic-release --dry-run --ci false)
-version=$(echo "$semanticRelease" | sed -nE 's/.+The next release version is (.+)/\1/p')
+semanticRelease=$(npx semantic-release --dry-run --ci false 2>&1)
+version=$(echo "$semanticRelease" | sed -nE 's/.*(The next release version is |Published release |Skip v)([0-9]+\.[0-9]+\.[0-9]+).*/\2/p' | head -n 1)
 
-echo "$version" > $VERSION_FILE
+echo "$version" > "$VERSION_FILE"

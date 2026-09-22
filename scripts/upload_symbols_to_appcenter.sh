@@ -2,6 +2,11 @@
 
 set -exu
 
+if [ -z "${APPCENTER_TOKEN:-}" ]; then
+  echo "APPCENTER_TOKEN is not set; skipping AppCenter symbols upload."
+  exit 0
+fi
+
 ownerName="alt-tab-macos"
 appName="alt-tab-macos"
 url="https://api.appcenter.ms/v0.1/apps/$ownerName/$appName"

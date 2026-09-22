@@ -2,6 +2,12 @@
 
 set -exu
 
+if [ -z "${SPARKLE_ED_PRIVATE_KEY:-}" ]; then
+  echo "SPARKLE_ED_PRIVATE_KEY is not set; skipping appcast update."
+  exit 0
+fi
+
+githubRepo="${GITHUB_REPOSITORY:-lwouis/alt-tab-macos}"
 version="$(cat "$VERSION_FILE")"
 date="$(date +'%a, %d %b %Y %H:%M:%S %z')"
 minimumSystemVersion="$(awk -F ' = ' '/MACOSX_DEPLOYMENT_TARGET/ { print $2; }' < config/base.xcconfig)"
@@ -15,7 +21,7 @@ echo "
       <sparkle:minimumSystemVersion>$minimumSystemVersion</sparkle:minimumSystemVersion>
       <sparkle:releaseNotesLink>https://alt-tab.app/changelog-bare</sparkle:releaseNotesLink>
       <enclosure
-        url=\"https://github.com/lwouis/alt-tab-macos/releases/download/v$version/$zipName\"
+        url=\"https://github.com/$githubRepo/releases/download/v$version/$zipName\"
         sparkle:version=\"$version\"
         sparkle:shortVersionString=\"$version\"
         $edSignatureAndLength

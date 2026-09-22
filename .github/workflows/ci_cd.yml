@@ -2,6 +2,13 @@ on:
   push:
     branches:
       - master
+  pull_request:
+    branches:
+      - master
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   APPCENTER_SECRET: ${{ secrets.APPCENTER_SECRET }}
@@ -20,19 +27,15 @@ env:
 jobs:
   build:
     runs-on: macos-15 # all options: https://github.com/actions/runner-images/tree/main
-    environment: production
     steps:
-#      - env:
-#          GITHUB_CONTEXT: ${{ toJSON(github) }}
-#        run: echo "$GITHUB_CONTEXT"
       - id: pre-checkout
         env:
           COMMITS: ${{ toJson(github.event.commits) }}
         run: |
           if [[ "${{ github.event_name }}" == "push" ]]; then
-            COUNT=$(( $(echo "$COMMITS" | jq length) + 30 ))
+            COUNT=$(( $(echo "$COMMITS" | jq length 2>/dev/null || echo 0) + 30 ))
           else
-            COUNT=1
+            COUNT=0
           fi
           echo "fetch-depth=$COUNT" >> "$GITHUB_OUTPUT"
       - uses: actions/checkout@v6
@@ -40,30 +43,49 @@ jobs:
           fetch-depth: ${{ steps.pre-checkout.outputs.fetch-depth }}
       - uses: actions/setup-node@v6
         with:
-          node-version: 16
+          node-version: 20
           cache: 'npm'
-      - run: sudo xcode-select -s /Applications/Xcode_26.0.1.app/Contents/Developer
+      - run: |
+          if [ -d "/Applications/Xcode_26.0.1.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_26.0.1.app/Contents/Developer
+          fi
       - run: scripts/print_env.sh
       - run: npm ci
-      - run: npx commitlint --from "$GITHUB_EVENT_BEFORE" --to "$GITHUB_EVENT_AFTER" --verbose
+      - run: |
+          if [ -n "$GITHUB_EVENT_BEFORE" ] && git rev-parse --verify "$GITHUB_EVENT_BEFORE" >/dev/null 2>&1; then
+            npx commitlint --from "$GITHUB_EVENT_BEFORE" --to "$GITHUB_EVENT_AFTER" --verbose
+          else
+            npx commitlint --last --verbose
+          fi
       - run: scripts/ensure_generated_files_are_up_to_date.sh
       - run: scripts/determine_next_version.sh
+        if: github.event_name == 'push'
       - run: scripts/replace_environment_variables_in_app.sh
+        if: github.event_name == 'push'
       - run: scripts/codesign/setup_ci_master.sh
+        if: github.event_name == 'push'
       - run: scripts/run_tests.sh
       - run: scripts/build_app.sh
       - run: scripts/package_and_notarize_release.sh
+        if: github.event_name == 'push'
       - run: scripts/upload_symbols_to_appcenter.sh
+        if: github.event_name == 'push'
       - run: scripts/update_appcast.sh
+        if: github.event_name == 'push'
       - run: scripts/update_readme_and_website.sh
+        if: github.event_name == 'push'
       - run: npx semantic-release
+        if: github.event_name == 'push'
       - id: set_release_info
         run: scripts/extract_latest_changelog.sh
+        if: github.event_name == 'push'
       - uses: softprops/action-gh-release@v3
+        if: github.event_name == 'push' && steps.set_release_info.outputs.tag_name != ''
         with:
           tag_name: ${{ steps.set_release_info.outputs.tag_name }}
           body: ${{ steps.set_release_info.outputs.body }}
           files: ${{ env.XCODE_BUILD_PATH }}/*.zip
       - run: scripts/update_website.sh
+        if: github.event_name == 'push'
         env:
           GH_TOKEN: ${{ secrets.WEBSITE_DISPATCH_TOKEN }}

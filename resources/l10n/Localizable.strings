@@ -389,6 +389,9 @@
 "Hold" = "Hold";
 
 /* No comment provided by engineer. */
+"Hold this shortcut to unmute your microphone. Arm/disarm push-to-talk from the menu bar." = "Hold this shortcut to unmute your microphone. Arm/disarm push-to-talk from the menu bar.";
+
+/* No comment provided by engineer. */
 "I already have a license key" = "I already have a license key";
 
 /* LetsMove replacement alert */
@@ -561,6 +564,15 @@
 
 /* No comment provided by engineer. */
 "Pro Lifetime license activated for %@" = "Pro Lifetime license activated for %@";
+
+/* No comment provided by engineer. */
+"Push-to-talk shortcut" = "Push-to-talk shortcut";
+
+/* Menubar option */
+"Push-to-talk: Off" = "Push-to-talk: Off";
+
+/* Menubar option */
+"Push-to-talk: On" = "Push-to-talk: On";
 
 /* %@ is AltTab */
 "Quit %@" = "Quit %@";
@@ -762,6 +774,9 @@
 
 /* No comment provided by engineer. */
 "System Default" = "System Default";
+
+/* Push-to-talk on-screen indicator */
+"Talking…" = "Talking…";
 
 /* No comment provided by engineer. */
 "The App Icons style is a Pro feature." = "The App Icons style is a Pro feature.";

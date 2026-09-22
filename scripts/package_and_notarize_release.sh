@@ -10,7 +10,12 @@ oldPwd="$PWD"
 cd "$XCODE_BUILD_PATH"
 ditto -c -k --keepParent "$appFile" "$zipName"
 
-# request notarization
+# request notarization if credentials are provided
+if [ -z "${APPLE_ID:-}" ] || [ -z "${APPLE_PASSWORD:-}" ] || [ -z "${APPLE_TEAM_ID:-}" ]; then
+  echo "Apple notarization credentials not provided; skipping notarization."
+  exit 0
+fi
+
 requestStatus=$("$oldPwd"/scripts/notarytool submit \
   --apple-id "$APPLE_ID" \
   --password "$APPLE_PASSWORD" \
