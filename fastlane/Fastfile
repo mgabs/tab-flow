@@ -38,13 +38,15 @@ platform :mac do
 
   desc "Full production release pipeline, as run by CI on every push to master"
   lane :release do
+    sh("cd .. && scripts/determine_next_version.sh")
     sh("cd .. && scripts/replace_environment_variables_in_app.sh")
     test
     build
     notarize_and_package
     sh("cd .. && scripts/upload_symbols_to_appcenter.sh")
     sh("cd .. && scripts/update_appcast.sh")
-    sh("cd .. && scripts/update_readme_and_website.sh")
+    sh("cd .. && scripts/extract_latest_changelog.sh")
+    sh("cd .. && scripts/update_website.sh")
   end
 
   desc "Build a Release .app locally for manual testing/distribution, signed with the Local Self-Signed dev cert unless " \
