@@ -7,9 +7,9 @@ class AppCenterCrash: NSObject {
 
     override init() {
         super.init()
+        guard !AppCenterCrash.secret.isEmpty else { return }
         // Enable catching uncaught exceptions thrown on the main thread
         UserDefaults.standard.register(defaults: ["NSApplicationCrashOnExceptions": true])
-//        AppCenter.logLevel = .verbose
         // without this, appcenter makes network call just from AppCenter.start; we only want networking when sending reports
         AppCenter.networkRequestsAllowed = false
         // Wire the delegate + confirmation handler before start: AppCenter processes pending crash
