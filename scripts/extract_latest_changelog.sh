@@ -2,15 +2,15 @@
 
 set -euo pipefail
 
-# Write tag_name and release body to $GITHUB_OUTPUT for the GitHub release step
-version="$(cat "$VERSION_FILE" 2>/dev/null || true)"
-if [ -z "$version" ]; then
-  echo "tag_name=" >> "$GITHUB_OUTPUT"
-  echo "body=" >> "$GITHUB_OUTPUT"
-  exit 0
-fi
+version="$(cat "${VERSION_FILE:-VERSION.txt}" 2>/dev/null || true)"
+tag_name="${GITHUB_REF_NAME:-v${version#v}}"
 
-echo "tag_name=v$version" >> "$GITHUB_OUTPUT"
+echo "tag_name=$tag_name" >> "$GITHUB_OUTPUT"
 echo "body<<EOF" >> "$GITHUB_OUTPUT"
-awk '/^##? \[/{if(found) exit; found=1; next} found' changelog.md >> "$GITHUB_OUTPUT"
+body=$(awk '/^##? \[/{if(found) exit; found=1; next} found' changelog.md 2>/dev/null || true)
+if [ -n "$body" ]; then
+  echo "$body" >> "$GITHUB_OUTPUT"
+else
+  echo "Release $tag_name" >> "$GITHUB_OUTPUT"
+fi
 echo "EOF" >> "$GITHUB_OUTPUT"

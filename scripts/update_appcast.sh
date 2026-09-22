@@ -7,7 +7,7 @@ if [ -z "${SPARKLE_ED_PRIVATE_KEY:-}" ]; then
   exit 0
 fi
 
-githubRepo="${GITHUB_REPOSITORY:-lwouis/alt-tab-macos}"
+githubRepo="${GITHUB_REPOSITORY:-mgabs/alt-tab-macos}"
 version="$(cat "$VERSION_FILE")"
 date="$(date +'%a, %d %b %Y %H:%M:%S %z')"
 minimumSystemVersion="$(awk -F ' = ' '/MACOSX_DEPLOYMENT_TARGET/ { print $2; }' < config/base.xcconfig)"
