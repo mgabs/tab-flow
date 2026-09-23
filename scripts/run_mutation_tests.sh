@@ -6,7 +6,7 @@ echo "========================================="
 echo "       RUNNING MUTATION TESTS            "
 echo "========================================="
 
-DEVELOPER_DIR="${DEVELOPER_DIR:-/Applications/Xcode.app/Contents/Developer}"
+DEVELOPER_DIR="${DEVELOPER_DIR:-$(xcode-select -p)}"
 export DEVELOPER_DIR
 
 run_mutant_test() {
