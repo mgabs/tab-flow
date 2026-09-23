@@ -47,19 +47,19 @@ Install TabFlow directly using [Homebrew](https://brew.sh/):
 brew tap mgabs/tap
 
 # Install the TabFlow cask
-brew install --cask tabflow
+brew install --cask tab-flow
 ```
 
 Or as a single command:
 
 ```bash
-brew install --cask mgabs/tap/tabflow
+brew install --cask mgabs/tap/tab-flow
 ```
 
 To update TabFlow later:
 
 ```bash
-brew upgrade --cask tabflow
+brew upgrade --cask tab-flow
 ```
 
 ---
@@ -68,7 +68,11 @@ brew upgrade --cask tabflow
 
 1. Download the latest `TabFlow-x.x.x.zip` from [GitHub Releases](https://github.com/mgabs/tab-flow/releases/latest) or [tabflow.app](https://tabflow.app/).
 2. Unzip the archive and move **TabFlow.app** into your `/Applications` folder.
-3. Launch **TabFlow**.
+3. If macOS blocks opening the app with a Gatekeeper / malware warning or error -128, remove the quarantine attribute:
+   ```bash
+   xattr -dr com.apple.quarantine /Applications/TabFlow.app
+   ```
+4. Launch **TabFlow**.
 
 ---
 
