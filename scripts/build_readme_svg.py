@@ -36,6 +36,7 @@ import tempfile
 
 REPO_ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..'))
 DEFAULT_SOURCE = os.path.join(REPO_ROOT, 'docs', 'readme', 'screenshot-source.webp')
+DEFAULT_ICON = os.path.join(REPO_ROOT, 'resources', 'icons', 'app', 'app.iconset', 'icon_512x512@2x.png')
 OUTPUT_PATH = os.path.join(REPO_ROOT, 'docs', 'readme', 'main.svg')
 
 
@@ -44,17 +45,30 @@ def encode_screenshot(input_path: str) -> str:
     with tempfile.NamedTemporaryFile(suffix='.jpg', delete=False) as tmp:
         tmp_path = tmp.name
     try:
-        subprocess.run(
-            ['magick', input_path, '-resize', '1800x>', '-quality', '86', tmp_path],
-            check=True,
-        )
+        try:
+            subprocess.run(
+                ['magick', input_path, '-resize', '1800x>', '-quality', '86', tmp_path],
+                check=True,
+            )
+        except (FileNotFoundError, subprocess.CalledProcessError):
+            subprocess.run(
+                ['sips', '-s', 'format', 'jpeg', '-s', 'formatOptions', '86', '--resampleWidth', '1800', input_path, '--out', tmp_path],
+                check=True,
+            )
         with open(tmp_path, 'rb') as f:
             return base64.b64encode(f.read()).decode('ascii')
     finally:
-        os.unlink(tmp_path)
+        if os.path.exists(tmp_path):
+            os.unlink(tmp_path)
 
 
-def build_svg(screenshot_b64: str) -> str:
+def encode_icon() -> str:
+    """Encode the brand app icon PNG to base64."""
+    with open(DEFAULT_ICON, 'rb') as f:
+        return base64.b64encode(f.read()).decode('ascii')
+
+
+def build_svg(screenshot_b64: str, icon_b64: str) -> str:
     """
     Build the SVG. Layout (y coordinates inside a 900x1040 viewBox):
        50 - 194 : icon (144x144, vertically centered with the title+tagline stack)
@@ -175,9 +189,7 @@ def build_svg(screenshot_b64: str) -> str:
   </g>
 
   <g transform="translate(166 50)">
-    <svg width="144" height="144" viewBox="0 0 55 55">
-      <g><rect width="43.171" height="36.695" x="1.843" y="15.476" fill="url(#iconCardA)" rx="1.125" transform="rotate(-9 1.843 15.476)"/><rect width="43.171" height="36.695" x="5.771" y="9.315" fill="url(#iconCardB)" rx="1.125" transform="rotate(-9 5.771 9.315)"/><path fill="url(#iconCardC)" d="M6.481 13.787 43.49 7.926a1.125 1.125 0 0 1 1.287.935l4.856 30.658-37.009 5.862a1.125 1.125 0 0 1-1.287-.935z"/><path fill="#fff" fill-rule="evenodd" d="m43.728 21.934-9.955 8.01-.639-4.033-6.662 1.055-.714-4.51L32.42 21.4l-.635-4.009z" clip-rule="evenodd"/><path fill="#fff" fill-rule="evenodd" d="m12.892 34.939 11.943 4.542-.639-4.033 6.663-1.055-.714-4.51-6.663 1.055-.635-4.01z" clip-rule="evenodd"/><circle cx="12.121" cy="18.181" r="1.923" fill="#fff" transform="rotate(-9 12.121 18.18)"/><circle cx="17.55" cy="17.322" r="1.923" fill="#fff" transform="rotate(-9 17.55 17.322)"/><circle cx="23.036" cy="16.452" r="1.923" fill="#fff" transform="rotate(-9 23.036 16.452)"/></g>
-    </svg>
+    <image href="data:image/png;base64,{icon_b64}" width="144" height="144"/>
   </g>
 
   <text x="330" y="120" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="700" font-size="56" fill="#ffffff" letter-spacing="-1.5">TabFlow</text>
@@ -264,7 +276,8 @@ def main() -> None:
 
     print(f'reading screenshot: {src}')
     b64 = encode_screenshot(src)
-    svg = build_svg(b64)
+    icon_b64 = encode_icon()
+    svg = build_svg(b64, icon_b64)
 
     with open(OUTPUT_PATH, 'w') as f:
         f.write(svg)
