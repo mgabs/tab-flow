@@ -19,7 +19,7 @@ echo "
       <title>Version $version</title>
       <pubDate>$date</pubDate>
       <sparkle:minimumSystemVersion>$minimumSystemVersion</sparkle:minimumSystemVersion>
-      <sparkle:releaseNotesLink>https://alt-tab.app/changelog-bare</sparkle:releaseNotesLink>
+      <sparkle:releaseNotesLink>https://tabflow.app/changelog-bare</sparkle:releaseNotesLink>
       <enclosure
         url=\"https://github.com/$githubRepo/releases/download/v$version/$zipName\"
         sparkle:version=\"$version\"
