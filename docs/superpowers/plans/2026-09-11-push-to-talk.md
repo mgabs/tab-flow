@@ -261,7 +261,7 @@ command the repo currently uses — see `docs/contributing.md` "Releasing the pr
 
 - [ ] **Step 5: Register the new files in the Xcode project and commit**
 
-Add the 3 new files to `alt-tab-macos.xcodeproj/project.pbxproj` (main app target for the `.swift`
+Add the 3 new files to `tab-flow-macos.xcodeproj/project.pbxproj` (main app target for the `.swift`
 implementation file, test target for the `Tests.swift` file; the `.md` spec doesn't need a build
 phase entry, only a `PBXFileReference`/group entry so it shows in Xcode). Generate new 24-char
 uppercase-hex IDs via `python3 -c "import secrets; print(secrets.token_hex(12).upper())"` for each
@@ -272,7 +272,7 @@ relevant PBXSourcesBuildPhase/PBXResourcesBuildPhase `files` list).
 git add src/push-to-talk/PushToTalkControllerTestable.swift \
         src/push-to-talk/PushToTalkControllerTestableSpecs.md \
         src/push-to-talk/PushToTalkControllerTestableTests.swift \
-        alt-tab-macos.xcodeproj/project.pbxproj
+        tab-flow-macos.xcodeproj/project.pbxproj
 git commit -m "feat: add push-to-talk state machine"
 ```
 
@@ -397,16 +397,16 @@ frameworks; like `Carbon.HIToolbox.Events` (already imported elsewhere in this c
 extra `project.pbxproj` linker entry), no explicit framework-linking change is expected — if the
 build instead fails with an unresolved-symbol/linker error, add `CoreAudio.framework` and
 `AudioToolbox.framework` to the main app target's `PBXFrameworksBuildPhase` in
-`alt-tab-macos.xcodeproj/project.pbxproj` (same 4-entry pattern as any other framework there) and
+`tab-flow-macos.xcodeproj/project.pbxproj` (same 4-entry pattern as any other framework there) and
 re-run.
 
 - [ ] **Step 3: Register the new file in the Xcode project and commit**
 
-Add `PushToTalkAudioDevice.swift` to `alt-tab-macos.xcodeproj/project.pbxproj` (main app target),
+Add `PushToTalkAudioDevice.swift` to `tab-flow-macos.xcodeproj/project.pbxproj` (main app target),
 same 4-entry pattern as Task 1.
 
 ```bash
-git add src/push-to-talk/PushToTalkAudioDevice.swift alt-tab-macos.xcodeproj/project.pbxproj
+git add src/push-to-talk/PushToTalkAudioDevice.swift tab-flow-macos.xcodeproj/project.pbxproj
 git commit -m "feat: add CoreAudio wrapper for push-to-talk"
 ```
 
@@ -511,7 +511,7 @@ Run: `bash ai/build.sh`. Expected: `** BUILD SUCCEEDED **`.
 - [ ] **Step 3: Register the new file in the Xcode project and commit**
 
 ```bash
-git add src/push-to-talk/PushToTalkHotkey.swift alt-tab-macos.xcodeproj/project.pbxproj
+git add src/push-to-talk/PushToTalkHotkey.swift tab-flow-macos.xcodeproj/project.pbxproj
 git commit -m "feat: add standalone global hotkey for push-to-talk"
 ```
 
@@ -678,7 +678,7 @@ if executing out of order. Once all exist, run: `bash ai/build.sh`. Expected: `*
 - [ ] **Step 3: Register the new file in the Xcode project and commit**
 
 ```bash
-git add src/push-to-talk/PushToTalkController.swift alt-tab-macos.xcodeproj/project.pbxproj
+git add src/push-to-talk/PushToTalkController.swift tab-flow-macos.xcodeproj/project.pbxproj
 git commit -m "feat: add push-to-talk controller"
 ```
 
@@ -768,7 +768,7 @@ Run: `bash ai/build.sh`. Expected: `** BUILD SUCCEEDED **`.
 - [ ] **Step 3: Register the new file in the Xcode project and commit**
 
 ```bash
-git add src/push-to-talk/PushToTalkHUD.swift alt-tab-macos.xcodeproj/project.pbxproj
+git add src/push-to-talk/PushToTalkHUD.swift tab-flow-macos.xcodeproj/project.pbxproj
 git commit -m "feat: add on-screen HUD for push-to-talk"
 ```
 
