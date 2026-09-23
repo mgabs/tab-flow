@@ -2,7 +2,7 @@ default_platform(:mac)
 
 XCODE_PROJECT = "alt-tab-macos.xcodeproj"
 DERIVED_DATA_PATH = "DerivedData"
-APP_NAME = ENV["APP_NAME"] || "AltTab"
+APP_NAME = ENV["APP_NAME"] || "TabFlow"
 XCODE_BUILD_PATH = ENV["XCODE_BUILD_PATH"] || "#{DERIVED_DATA_PATH}/Build/Products/Release"
 VERSION_FILE = ENV["VERSION_FILE"] || "VERSION.txt"
 
