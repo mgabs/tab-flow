@@ -82,8 +82,9 @@ jobs:
         run: scripts/run_mutation_tests.sh
 
   build:
-    name: Build Stage (Compile & Package App)
+    name: Build Stage (Compile App)
     needs: test
+    if: "!startsWith(github.ref, 'refs/tags/')"
     runs-on: macos-15
     steps:
       - uses: actions/checkout@v6
@@ -107,16 +108,10 @@ jobs:
         if: github.event_name == 'push'
       - name: Build Release Application
         run: scripts/build_app.sh
-      - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-build-products
-          path: DerivedData/Build/Products/Release/
-          retention-days: 7
 
   release:
-    name: Release Stage (Notarize, Appcast & GitHub Release)
-    needs: build
+    name: Build & Release Stage (Build, Notarize & Publish)
+    needs: test
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: macos-15
     steps:
@@ -137,11 +132,13 @@ jobs:
             sudo xcode-select -s /Applications/Xcode_15.4.app/Contents/Developer
           fi
           xcodebuild -version
-      - name: Download Build Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: app-build-products
-          path: DerivedData/Build/Products/Release/
+      - run: scripts/print_env.sh
+      - run: scripts/determine_next_version.sh
+      - run: scripts/replace_environment_variables_in_app.sh
+      - name: Setup Code Signing Keychains
+        run: scripts/codesign/setup_ci_master.sh
+      - name: Build Application
+        run: scripts/build_app.sh
       - name: Package & Notarize Release
         run: scripts/package_and_notarize_release.sh
       - name: Upload Symbols to AppCenter
