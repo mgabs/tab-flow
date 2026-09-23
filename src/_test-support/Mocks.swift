@@ -138,7 +138,7 @@ class App {
         var tilesPanel = TilesPanelMock()
     }
     static let app = AppMock()
-    static let bundleIdentifier = "com.mgabs.alt-tab-macos"
+    static let bundleIdentifier = "com.mgabs.tabflow-macos"
 }
 
 class TilesPanel {

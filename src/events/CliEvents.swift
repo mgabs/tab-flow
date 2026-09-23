@@ -406,7 +406,7 @@ class CliClient {
             }
             exit(0)
         } catch {
-            fail("AltTab.app needs to be running for CLI commands to work")
+            fail("TabFlow.app needs to be running for CLI commands to work")
         }
     }
 
