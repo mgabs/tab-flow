@@ -138,7 +138,6 @@
 		5F0A63042F82D97C00AE4C38 /* LicenseState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F0A63022F82D97C00AE4C38 /* LicenseState.swift */; };
 		5F0A63052F82D97C00AE4C38 /* RemoteLicenseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F0A63002F82D97C00AE4C38 /* RemoteLicenseClient.swift */; };
 		5F0A63062F82D97C00AE4C39 /* ProBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F0A63072F82D97C00AE4C3A /* ProBadgeView.swift */; };
-		5F0A63072F82D99200AE4C38 /* UpgradeTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F0A63062F82D99200AE4C38 /* UpgradeTab.swift */; };
 		5F1CE0010000000000000001 /* Clock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F1CE0000000000000000001 /* Clock.swift */; };
 		5F1CE0010000000000000002 /* Clock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F1CE0000000000000000001 /* Clock.swift */; };
 		5F1CE0010000000000000003 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F1CE0000000000000000002 /* Keychain.swift */; };
@@ -164,28 +163,12 @@
 		5F882F382EC3C63400110A9F /* CustomRecorderControlTestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0C8DC2A355E29516DD2FAF /* CustomRecorderControlTestable.swift */; };
 		5F906A342F16A18500B99924 /* Screens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F906A332F16A18000B99924 /* Screens.swift */; };
 		5FA002000000000000000001 /* ProTransitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA001000000000000000001 /* ProTransitionManager.swift */; };
-		5FA002000000000000000002 /* Day1WelcomeLetterWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA001000000000000000002 /* Day1WelcomeLetterWindow.swift */; };
-		5FA002000000000000000003 /* Day12HeadsUpPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA001000000000000000003 /* Day12HeadsUpPopover.swift */; };
-		5FA002000000000000000004 /* Day15FullUpgradeWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA001000000000000000004 /* Day15FullUpgradeWindow.swift */; };
-		5FA002000000000000000005 /* Day15ProactiveWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA001000000000000000005 /* Day15ProactiveWindow.swift */; };
-		5FA002000000000000000006 /* Day15HardGatePopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA001000000000000000006 /* Day15HardGatePopover.swift */; };
-		5FA002000000000000000007 /* Day21ReminderPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA001000000000000000007 /* Day21ReminderPopover.swift */; };
-		5FA002000000000000000008 /* Day35FinalWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA001000000000000000008 /* Day35FinalWindow.swift */; };
-		5FA002000000000000000009 /* Day4TourPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA001000000000000000009 /* Day4TourPopover.swift */; };
-		5FA002000000000000000010 /* ProFeatureCopy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA001000000000000000010 /* ProFeatureCopy.swift */; };
 		5FA002000000000000000011 /* ProFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA001000000000000000011 /* ProFeature.swift */; };
-		5FA002000000000000000012 /* ProPromptWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA001000000000000000012 /* ProPromptWindow.swift */; };
-		5FA002000000000000000013 /* ProPromptPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA001000000000000000013 /* ProPromptPopover.swift */; };
-		5FA002000000000000000014 /* ProConversionCopy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA001000000000000000014 /* ProConversionCopy.swift */; };
 		5FA002000000000000000015 /* ProTransitionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA001000000000000000015 /* ProTransitionState.swift */; };
 		5FA002000000000000000016 /* ProTransitionScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA001000000000000000016 /* ProTransitionScheduler.swift */; };
-		5FA002000000000000000017 /* ProPromptHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA001000000000000000017 /* ProPromptHost.swift */; };
 		5FA002000000000000000018 /* PreferenceDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA001000000000000000018 /* PreferenceDefinition.swift */; };
 		5FA002000000000000000019 /* LoginItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA001000000000000000019 /* LoginItem.swift */; };
 		5FA002000000000000000020 /* ShortcutConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA001000000000000000020 /* ShortcutConfiguration.swift */; };
-		5FA002000000000000000022 /* ProPromptHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA001000000000000000021 /* ProPromptHeader.swift */; };
-		5FA002000000000000000023 /* UsageStatHeroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA001000000000000000023 /* UsageStatHeroView.swift */; };
-		5FA002000000000000000024 /* ProGradientButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA001000000000000000024 /* ProGradientButton.swift */; };
 		5FA004000000000000000003 /* ProTransitionManagerTestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA004000000000000000001 /* ProTransitionManagerTestable.swift */; };
 		5FA004000000000000000004 /* ProTransitionManagerTestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA004000000000000000001 /* ProTransitionManagerTestable.swift */; };
 		5FA004000000000000000005 /* ProTransitionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA004000000000000000002 /* ProTransitionTests.swift */; };
@@ -551,7 +534,6 @@
 		5F0A63002F82D97C00AE4C38 /* RemoteLicenseClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteLicenseClient.swift; sourceTree = "<group>"; };
 		5F0A63012F82D97C00AE4C38 /* LicenseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicenseManager.swift; sourceTree = "<group>"; };
 		5F0A63022F82D97C00AE4C38 /* LicenseState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicenseState.swift; sourceTree = "<group>"; };
-		5F0A63062F82D99200AE4C38 /* UpgradeTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpgradeTab.swift; sourceTree = "<group>"; };
 		5F0A63072F82D97C00AE4C3A /* ProBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProBadgeView.swift; sourceTree = "<group>"; };
 		5F1CE0000000000000000001 /* Clock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Clock.swift; sourceTree = "<group>"; };
 		5F1CE0000000000000000002 /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
@@ -570,28 +552,12 @@
 		5F7B6AFB2F3BAB98003E25E8 /* StatusIconsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusIconsView.swift; sourceTree = "<group>"; };
 		5F906A332F16A18000B99924 /* Screens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screens.swift; sourceTree = "<group>"; };
 		5FA001000000000000000001 /* ProTransitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProTransitionManager.swift; sourceTree = "<group>"; };
-		5FA001000000000000000002 /* Day1WelcomeLetterWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day1WelcomeLetterWindow.swift; sourceTree = "<group>"; };
-		5FA001000000000000000003 /* Day12HeadsUpPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day12HeadsUpPopover.swift; sourceTree = "<group>"; };
-		5FA001000000000000000004 /* Day15FullUpgradeWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day15FullUpgradeWindow.swift; sourceTree = "<group>"; };
-		5FA001000000000000000005 /* Day15ProactiveWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day15ProactiveWindow.swift; sourceTree = "<group>"; };
-		5FA001000000000000000006 /* Day15HardGatePopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day15HardGatePopover.swift; sourceTree = "<group>"; };
-		5FA001000000000000000007 /* Day21ReminderPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day21ReminderPopover.swift; sourceTree = "<group>"; };
-		5FA001000000000000000008 /* Day35FinalWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day35FinalWindow.swift; sourceTree = "<group>"; };
-		5FA001000000000000000009 /* Day4TourPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day4TourPopover.swift; sourceTree = "<group>"; };
-		5FA001000000000000000010 /* ProFeatureCopy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProFeatureCopy.swift; sourceTree = "<group>"; };
 		5FA001000000000000000011 /* ProFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProFeature.swift; sourceTree = "<group>"; };
-		5FA001000000000000000012 /* ProPromptWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProPromptWindow.swift; sourceTree = "<group>"; };
-		5FA001000000000000000013 /* ProPromptPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProPromptPopover.swift; sourceTree = "<group>"; };
-		5FA001000000000000000014 /* ProConversionCopy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProConversionCopy.swift; sourceTree = "<group>"; };
 		5FA001000000000000000015 /* ProTransitionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProTransitionState.swift; sourceTree = "<group>"; };
 		5FA001000000000000000016 /* ProTransitionScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProTransitionScheduler.swift; sourceTree = "<group>"; };
-		5FA001000000000000000017 /* ProPromptHost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProPromptHost.swift; sourceTree = "<group>"; };
 		5FA001000000000000000018 /* PreferenceDefinition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceDefinition.swift; sourceTree = "<group>"; };
 		5FA001000000000000000019 /* LoginItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginItem.swift; sourceTree = "<group>"; };
 		5FA001000000000000000020 /* ShortcutConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutConfiguration.swift; sourceTree = "<group>"; };
-		5FA001000000000000000021 /* ProPromptHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProPromptHeader.swift; sourceTree = "<group>"; };
-		5FA001000000000000000023 /* UsageStatHeroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageStatHeroView.swift; sourceTree = "<group>"; };
-		5FA001000000000000000024 /* ProGradientButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProGradientButton.swift; sourceTree = "<group>"; };
 		5FA004000000000000000001 /* ProTransitionManagerTestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProTransitionManagerTestable.swift; sourceTree = "<group>"; };
 		5FA004000000000000000002 /* ProTransitionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProTransitionTests.swift; sourceTree = "<group>"; };
 		3B44FD6F6D57123F37833627 /* PushToTalkControllerTestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushToTalkControllerTestable.swift; sourceTree = "<group>"; };
@@ -948,14 +914,8 @@
 		276A49324F1740F1B507EEC5 /* ui */ = {
 			isa = PBXGroup;
 			children = (
-				5FA001000000000000000012 /* ProPromptWindow.swift */,
-				5FA001000000000000000013 /* ProPromptPopover.swift */,
 				5F0A63072F82D97C00AE4C3A /* ProBadgeView.swift */,
 				25966EE691FC6871588D796B /* ProBadgeViewSegmentTests.swift */,
-				5FA001000000000000000024 /* ProGradientButton.swift */,
-				5FA001000000000000000017 /* ProPromptHost.swift */,
-				5FA001000000000000000021 /* ProPromptHeader.swift */,
-				5FA001000000000000000023 /* UsageStatHeroView.swift */,
 			);
 			path = ui;
 			sourceTree = "<group>";
@@ -1288,8 +1248,6 @@
 			children = (
 				5FA001000000000000000011 /* ProFeature.swift */,
 				5F1CE0000000000000000099 /* ProFeatureTests.swift */,
-				5FA001000000000000000010 /* ProFeatureCopy.swift */,
-				5FA001000000000000000014 /* ProConversionCopy.swift */,
 				5B4341A610A084615576D930 /* license */,
 				276A49324F1740F1B507EEC5 /* ui */,
 				D0B1167FE5CECB486C55B924 /* scheduling */,
@@ -1488,7 +1446,6 @@
 		D04BA3FA52AA40B827A72F10 /* tabs */ = {
 			isa = PBXGroup;
 			children = (
-				5F0A63062F82D99200AE4C38 /* UpgradeTab.swift */,
 				5F21C9DE2C6E93F10091F72F /* appearance */,
 				5F21C9DD2C6E93E60091F72F /* controls */,
 				D04BA4A26987F67DD94C827F /* AboutTab.swift */,
@@ -1857,14 +1814,6 @@
 				5FA004000000000000000002 /* ProTransitionTests.swift */,
 				5FA001000000000000000015 /* ProTransitionState.swift */,
 				5FA001000000000000000016 /* ProTransitionScheduler.swift */,
-				5FA001000000000000000002 /* Day1WelcomeLetterWindow.swift */,
-				5FA001000000000000000009 /* Day4TourPopover.swift */,
-				5FA001000000000000000003 /* Day12HeadsUpPopover.swift */,
-				5FA001000000000000000004 /* Day15FullUpgradeWindow.swift */,
-				5FA001000000000000000005 /* Day15ProactiveWindow.swift */,
-				5FA001000000000000000006 /* Day15HardGatePopover.swift */,
-				5FA001000000000000000007 /* Day21ReminderPopover.swift */,
-				5FA001000000000000000008 /* Day35FinalWindow.swift */,
 			);
 			path = scheduling;
 			sourceTree = "<group>";
@@ -2306,29 +2255,13 @@
 				6F766002AD9A4651A5BFB16D /* PushToTalkHUD.swift in Sources */,
 				C5A9E31B74F04A6C8D21B4E7 /* PushToTalkController.swift in Sources */,
 				5FA002000000000000000011 /* ProFeature.swift in Sources */,
-				5FA002000000000000000012 /* ProPromptWindow.swift in Sources */,
-				5FA002000000000000000013 /* ProPromptPopover.swift in Sources */,
-				5FA002000000000000000014 /* ProConversionCopy.swift in Sources */,
 				5FA002000000000000000015 /* ProTransitionState.swift in Sources */,
 				5FA002000000000000000016 /* ProTransitionScheduler.swift in Sources */,
-				5FA002000000000000000017 /* ProPromptHost.swift in Sources */,
-				5FA002000000000000000022 /* ProPromptHeader.swift in Sources */,
-				5FA002000000000000000023 /* UsageStatHeroView.swift in Sources */,
 				5FA002000000000000000018 /* PreferenceDefinition.swift in Sources */,
 				5FA002000000000000000019 /* LoginItem.swift in Sources */,
 				5FA002000000000000000020 /* ShortcutConfiguration.swift in Sources */,
-				5FA002000000000000000002 /* Day1WelcomeLetterWindow.swift in Sources */,
-				5FA002000000000000000009 /* Day4TourPopover.swift in Sources */,
-				5FA002000000000000000003 /* Day12HeadsUpPopover.swift in Sources */,
-				5FA002000000000000000004 /* Day15FullUpgradeWindow.swift in Sources */,
-				5FA002000000000000000005 /* Day15ProactiveWindow.swift in Sources */,
-				5FA002000000000000000006 /* Day15HardGatePopover.swift in Sources */,
-				5FA002000000000000000007 /* Day21ReminderPopover.swift in Sources */,
-				5FA002000000000000000008 /* Day35FinalWindow.swift in Sources */,
-				5FA002000000000000000010 /* ProFeatureCopy.swift in Sources */,
 				D04BA1637E125D38546C26E2 /* StackView.swift in Sources */,
 				5F0A63062F82D97C00AE4C39 /* ProBadgeView.swift in Sources */,
-				5FA002000000000000000024 /* ProGradientButton.swift in Sources */,
 				D04BA7B8D599E1A7A27FF5AE /* AcknowledgmentsTab.swift in Sources */,
 				D04BA8757C9F20F25EB50785 /* TextField.swift in Sources */,
 				5F21C9E02C6E94240091F72F /* ShortcutsWhenActiveSheet.swift in Sources */,
@@ -2417,7 +2350,6 @@
 				BF0C8973EC078169170F2634 /* CliEvents.swift in Sources */,
 				BF0C8521DA3078516615C414 /* HelperExtensionsTestable.swift in Sources */,
 				BF0C8991399A3277A9A02FFA /* LightImageView.swift in Sources */,
-				5F0A63072F82D99200AE4C38 /* UpgradeTab.swift in Sources */,
 				BF0C8992399A3277A9A02FFB /* LightImageLayer.swift in Sources */,
 				BF0C8F40C2D0FF7601D926D3 /* LightweightTimer.swift in Sources */,
 				BF0C88A9AB286CB7CDC1019E /* MainMenu.swift in Sources */,

@@ -130,88 +130,9 @@ private final class SettingsSidebarCellView: NSTableCellView {
     }
 }
 
-final class UpgradeButton: ProGradientButton {
-    private var heightConstraint: NSLayoutConstraint!
-
-    override init(frame frameRect: NSRect) {
-        super.init(frame: frameRect)
-        heightConstraint = heightAnchor.constraint(equalToConstant: 24)
-        heightConstraint.isActive = true
-        refreshTitle()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("Class only supports programmatic initialization")
-    }
-
-    override func layout() {
-        super.layout()
-        refreshEmailTooltip()
-    }
-
-    func refreshTitle() {
-        let result = NSMutableAttributedString()
-        let mainAttrs: [NSAttributedString.Key: Any] = [
-            .foregroundColor: NSColor.white,
-            .font: NSFont.systemFont(ofSize: 13, weight: .semibold),
-        ]
-        let secondaryAttrs: [NSAttributedString.Key: Any] = [
-            .foregroundColor: NSColor.white.withAlphaComponent(0.8),
-            .font: NSFont.systemFont(ofSize: 11, weight: .regular),
-        ]
-        let state = LicenseManager.shared.state
-        if case .pro = state {
-            let title = LicenseManager.shared.isLifetimeVariant
-                ? NSLocalizedString("Pro Lifetime activated", comment: "")
-                : NSLocalizedString("Pro activated", comment: "")
-            if let email = LicenseManager.shared.customerEmail {
-                result.append(NSAttributedString(string: title, attributes: secondaryAttrs))
-                result.append(NSAttributedString(string: "\n", attributes: secondaryAttrs))
-                result.append(NSAttributedString(string: email, attributes: mainAttrs))
-            } else {
-                result.append(NSAttributedString(string: title, attributes: mainAttrs))
-            }
-        } else {
-            let subtitleText: String
-            if case .trial(let daysRemaining) = state {
-                subtitleText = String(format: NSLocalizedString("Trial: %d days remaining", comment: ""), daysRemaining)
-            } else if case .proExpired = state {
-                subtitleText = NSLocalizedString("License doesn't cover this version", comment: "")
-            } else {
-                subtitleText = NSLocalizedString("Trial expired", comment: "")
-            }
-            result.append(NSAttributedString(string: subtitleText, attributes: secondaryAttrs))
-            result.append(NSAttributedString(string: "\n", attributes: secondaryAttrs))
-            result.append(NSAttributedString(string: NSLocalizedString("Get Pro", comment: ""), attributes: mainAttrs))
-        }
-        let style = NSMutableParagraphStyle()
-        style.alignment = .center
-        style.lineBreakMode = .byTruncatingTail
-        result.addAttribute(.paragraphStyle, value: style, range: NSRange(location: 0, length: result.length))
-        attributedTitle = result
-        if #available(macOS 10.14, *) {
-            contentTintColor = .white
-        }
-        let hasSecondLine: Bool
-        if case .pro = state, LicenseManager.shared.customerEmail == nil {
-            hasSecondLine = false
-        } else {
-            hasSecondLine = true
-        }
-        heightConstraint.constant = hasSecondLine ? 35 : 24
-        refreshEmailTooltip()
-    }
-
-    private func refreshEmailTooltip() {
-        guard case .pro = LicenseManager.shared.state,
-              let email = LicenseManager.shared.customerEmail else {
-            toolTip = nil
-            return
-        }
-        let attrs: [NSAttributedString.Key: Any] = [.font: NSFont.systemFont(ofSize: 13, weight: .semibold)]
-        let emailWidth = (email as NSString).size(withAttributes: attrs).width
-        toolTip = emailWidth > bounds.width ? email : nil
-    }
+final class UpgradeButton: NSButton {
+    func refreshTitle() {}
+    func playShineAnimation() {}
 }
 
 private final class SettingsFlippedView: NSView {
@@ -1131,44 +1052,9 @@ class SettingsWindow: NSWindow {
     }
 
     func showUpgradeView() {
-        guard !isShowingUpgradeView else { return }
-        isShowingUpgradeView = true
-        sidebarTableView.deselectAll(nil)
-        selectedSectionId = nil
-        sectionsStackBottomConstraint.isActive = false
-        sectionsStack.isHidden = true
-        if upgradeContentView == nil {
-            let view = UpgradeTab.initTab()
-            view.translatesAutoresizingMaskIntoConstraints = false
-            sectionsDocumentView.addSubview(view)
-            let bottomConstraint = view.bottomAnchor.constraint(equalTo: sectionsDocumentView.bottomAnchor, constant: -Self.contentBottomPadding)
-            NSLayoutConstraint.activate([
-                view.topAnchor.constraint(equalTo: sectionsDocumentView.topAnchor, constant: Self.contentTopPadding + Self.topSectionTitlePadding),
-                view.leadingAnchor.constraint(equalTo: sectionsDocumentView.leadingAnchor, constant: Self.contentHorizontalPadding + Self.sectionContentHorizontalMargin),
-                view.trailingAnchor.constraint(lessThanOrEqualTo: sectionsDocumentView.trailingAnchor, constant: -(Self.contentTrailingPadding + Self.sectionContentHorizontalMargin)),
-                bottomConstraint,
-            ])
-            upgradeViewBottomConstraint = bottomConstraint
-            upgradeContentView = view
-        } else {
-            UpgradeTab.refreshStatus()
-        }
-        upgradeViewBottomConstraint?.isActive = true
-        upgradeContentView?.isHidden = false
-        isProgrammaticScrollInProgress = true
-        defer { isProgrammaticScrollInProgress = false }
-        rightScrollView.contentView.scroll(to: .zero)
-        rightScrollView.reflectScrolledClipView(rightScrollView.contentView)
-        lastContentScrollY = 0
     }
 
     private func hideUpgradeView() {
-        guard isShowingUpgradeView else { return }
-        isShowingUpgradeView = false
-        upgradeViewBottomConstraint?.isActive = false
-        upgradeContentView?.isHidden = true
-        sectionsStack.isHidden = false
-        sectionsStackBottomConstraint.isActive = true
     }
 
     func refreshUpgradeButton() {
@@ -1253,12 +1139,7 @@ extension SettingsWindow: NSWindowDelegate {
     }
 
     func windowDidBecomeKey(_ notification: Notification) {
-        // Trial day count is baked into `LicenseManager.state` and only recomputed on reassignment.
-        // Refresh before the user reads the upgrade button / upgrade tab so the day count is current.
         LicenseManager.shared.refreshState()
-        if isShowingUpgradeView {
-            UpgradeTab.refreshStatus()
-        }
         guard !hasPlayedShine else { return }
         hasPlayedShine = true
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
@@ -1267,15 +1148,11 @@ extension SettingsWindow: NSWindowDelegate {
     }
 
     func windowWillClose(_ notification: Notification) {
-        // Defer to the next runloop tick: tearing down view trees, removing observers,
-        // and dropping the last strong ref to `self` while AppKit is still inside its own
-        // close machinery causes objc_release crashes on re-entry.
         DispatchQueue.main.async {
             AppearanceTab.cleanup()
             ControlsTab.cleanup()
             GeneralTab.cleanup()
             ExceptionsTab.cleanup()
-            UpgradeTab.cleanup()
             SettingsWindow.shared = nil
         }
     }

@@ -602,7 +602,6 @@ final class ShortcutOverrideSegmented {
             let revertTo = Preferences.hasOverride(baseName, currentShortcutIndex) ? stored : globalIndex()
             control.selectedSegment = max(0, min(revertTo, cases.count - 1))
             refreshOverlayIfNeeded()
-            UpgradeTab.navigateToUpgradeTab()
             return
         }
         let key = Preferences.indexToName(baseName, currentShortcutIndex)
@@ -706,7 +705,6 @@ final class ShortcutOverrideRadios {
             // Snap back to the stored value.
             let storedIndex = Int(UserDefaults.standard.string(forKey: key) ?? "") ?? -1
             for (j, b) in buttonViews.enumerated() { b.state = (j == storedIndex) ? .on : .off }
-            UpgradeTab.navigateToUpgradeTab()
             return
         }
         let decision = OverrideClickResolver.decide(
