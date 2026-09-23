@@ -459,7 +459,7 @@
 		1C961FB3DCF4906FEEF4A23D /* TableGroupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableGroupView.swift; sourceTree = "<group>"; };
 		25966EE691FC6871588D796B /* ProBadgeViewSegmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProBadgeViewSegmentTests.swift; sourceTree = "<group>"; };
 		4807A6C523A9CD190052A53E /* SkyLight.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SkyLight.framework; path = ../../../../System/Library/PrivateFrameworks/SkyLight.framework; sourceTree = "<group>"; };
-		481FE54624D2D387001032F1 /* alt-tab-macos-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "alt-tab-macos-Bridging-Header.h"; sourceTree = "<group>"; };
+		481FE54624D2D387001032F1 /* tab-flow-macos-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "tab-flow-macos-Bridging-Header.h"; sourceTree = "<group>"; };
 		4B4409E4B3D98C491503CE5D /* OverrideClickResolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverrideClickResolverTests.swift; sourceTree = "<group>"; };
 		5883F0A729A5182C0071DB65 /* TrackpadEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackpadEvents.swift; sourceTree = "<group>"; };
 		5E1EC110000000000000C001 /* SelectionResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionResolver.swift; sourceTree = "<group>"; };
@@ -807,7 +807,7 @@
 		D04BAED1C4D6BB8E24847E79 /* TitleLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleLabel.swift; sourceTree = "<group>"; };
 		D04BAEF1D194C2379C9970F1 /* setup_ci_master.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = setup_ci_master.sh; sourceTree = "<group>"; };
 		D04BAF1058D2599E6E8ABBA6 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.info; path = Info.plist; sourceTree = "<group>"; };
-		D04BAF6F617FCA44D1F75B60 /* alt_tab_macos.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = alt_tab_macos.entitlements; sourceTree = "<group>"; };
+		D04BAF6F617FCA44D1F75B60 /* tab_flow_macos.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = tab_flow_macos.entitlements; sourceTree = "<group>"; };
 		D04BAFA20F13FB588F6CCB81 /* bug_report.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = bug_report.md; sourceTree = "<group>"; };
 		D04BAFC0A1B2C3D4E5F60001 /* TileOverView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileOverView.swift; sourceTree = "<group>"; };
 		D04BAFC2A1B2C3D4E5F60003 /* TileUnderLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileUnderLayer.swift; sourceTree = "<group>"; };
@@ -1358,13 +1358,13 @@
 				D04BAAF760E3A8A22BDA84D6 /* appcast.xml */,
 				D04BA6251F309645757C6000 /* src */,
 				D04BAF1058D2599E6E8ABBA6 /* Info.plist */,
-				D04BAF6F617FCA44D1F75B60 /* alt_tab_macos.entitlements */,
+				D04BAF6F617FCA44D1F75B60 /* tab_flow_macos.entitlements */,
 				D04BAA17F1B492591AAAA9A7 /* config */,
 				D04BA9CA03317B315B267E21 /* resources */,
 				D04BA075E359F36C27CD5BAE /* package-lock.json */,
 				D04BAB8A94DA69A6B5008AE5 /* Pipfile */,
 				D04BA84F172AE89F210CA01D /* Pipfile.lock */,
-				481FE54624D2D387001032F1 /* alt-tab-macos-Bridging-Header.h */,
+				481FE54624D2D387001032F1 /* tab-flow-macos-Bridging-Header.h */,
 				1C9618573E422118423CEC48 /* .swiftformatignore */,
 				1C9616522F4E58860385E090 /* .swiftformat */,
 				BF0C87320241EAE01E38EF53 /* .periphery.yml */,
@@ -1838,9 +1838,9 @@
 			productReference = BF0C832DEED422648209CCD2 /* unit-tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		D04BA5E73DAF232ADE11C97A /* alt-tab-macos */ = {
+		D04BA5E73DAF232ADE11C97A /* tab-flow-macos */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D04BA4D71CBB2FA4B9947B10 /* Build configuration list for PBXNativeTarget "alt-tab-macos" */;
+			buildConfigurationList = D04BA4D71CBB2FA4B9947B10 /* Build configuration list for PBXNativeTarget "tab-flow-macos" */;
 			buildPhases = (
 				D04BAD01F4BCEDF8B539AFD2 /* Sources */,
 				D04BA82F32FB183F65DC3E42 /* Frameworks */,
@@ -1852,8 +1852,8 @@
 			);
 			dependencies = (
 			);
-			name = "alt-tab-macos";
-			productName = "alt-tab-macos";
+			name = "tab-flow-macos";
+			productName = "tab-flow-macos";
 			productReference = D04BA82F792DF53958D92572 /* AltTab.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -1866,7 +1866,7 @@
 				LastUpgradeCheck = 1620;
 				ORGANIZATIONNAME = mgabs;
 			};
-			buildConfigurationList = D04BA83C9495F252D87CDF0F /* Build configuration list for PBXProject "alt-tab-macos" */;
+			buildConfigurationList = D04BA83C9495F252D87CDF0F /* Build configuration list for PBXProject "tab-flow-macos" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -1903,7 +1903,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D04BA5E73DAF232ADE11C97A /* alt-tab-macos */,
+				D04BA5E73DAF232ADE11C97A /* tab-flow-macos */,
 				BF0C873EC188A7EBBCF4310D /* unit-tests */,
 			);
 		};
@@ -2965,7 +2965,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D04BA4D71CBB2FA4B9947B10 /* Build configuration list for PBXNativeTarget "alt-tab-macos" */ = {
+		D04BA4D71CBB2FA4B9947B10 /* Build configuration list for PBXNativeTarget "tab-flow-macos" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D04BA6FB4EC72C6A126E86D7 /* Debug */,
@@ -2974,7 +2974,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D04BA83C9495F252D87CDF0F /* Build configuration list for PBXProject "alt-tab-macos" */ = {
+		D04BA83C9495F252D87CDF0F /* Build configuration list for PBXProject "tab-flow-macos" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D04BA801581D700C583B53FB /* Debug */,
