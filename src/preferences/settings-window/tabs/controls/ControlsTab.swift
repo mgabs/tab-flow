@@ -586,7 +586,6 @@ class ControlsTab {
         let currentCount = Preferences.shortcutCount
         guard currentCount < Preferences.maxShortcutCount else { return }
         if currentCount >= 1 && LicenseManager.shared.isProLocked {
-            UpgradeTab.navigateToUpgradeTab()
             return
         }
         resetShortcutPreferences(currentCount)

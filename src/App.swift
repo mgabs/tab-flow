@@ -148,7 +148,6 @@ class App: AppCenterApplication {
     }
 
     @objc static func openAccount() {
-        UpgradeTab.openAccountPage()
     }
 
     @objc static func showFeedbackPanel() {
@@ -519,7 +518,7 @@ class App: AppCenterApplication {
         if QAMenu.graphEnabled { DebugMenu.setEnabled(true) }
         #endif
         UsageStats.prune()
-        ProTransitionManager.shared.onAction = { ProPromptHost.shared.dispatch($0) }
+        ProTransitionManager.shared.onAction = { _ in }
         ProTransitionManager.shared.onAppLaunchComplete()
         Logger.info { "Finished launching AltTab" }
     }
@@ -567,7 +566,6 @@ extension App: NSApplicationDelegate {
             Menubar.refreshLicenseMenuItems()
             syncLicenseCookie(state: state)
             ProTransitionManager.shared.onLicenseStateChanged()
-            UpgradeTab.refreshStatus()
             SettingsWindow.shared?.refreshUpgradeButton()
             App.resetPreferencesDependentComponents()
             // `isProLocked` reads from state, so a state change implicitly changes the lock.
@@ -598,14 +596,12 @@ extension App: NSApplicationDelegate {
               !licenseKey.isEmpty else {
             return
         }
-        UpgradeTab.showAutoActivating(licenseKey)
         LicenseManager.shared.activate(licenseKey) { result in
             switch result {
             case .success:
-                UpgradeTab.showAutoActivationSuccess()
                 App.resetPreferencesDependentComponents()
             case .failure:
-                UpgradeTab.showAutoActivationFailed(licenseKey)
+                break
             }
         }
     }
