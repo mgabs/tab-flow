@@ -23,4 +23,5 @@ codesign.p12
 /fastlane/report.xml
 /fastlane/test_output/
 /vendor/bundle/
+/.bundle/
 /.worktrees/
