@@ -151,7 +151,7 @@ In an attempt to not have too many regressions, this documents will list OS inte
 * The "select next window" shortcut can be modifiers, modifiers+key, or just key; it can also contain the same modifiers as the hold "key"
 * All shortcuts, except the hold key, can be disabled by the user
 * Shortcuts can include the `escape` and `delete` key; these should not stop recording shortcuts
-* [Secure Input](https://github.com/lwouis/alt-tab-macos/issues/157#issuecomment-659170293) can prevent AltTab from listening to the keyboard
+* [Secure Input](https://github.com/mgabs/tabflow-macos/issues/157#issuecomment-659170293) can prevent AltTab from listening to the keyboard
 * Some shortcuts should only work when AltTab is open
   * These shortcuts should active whether the hold shortcut is held or not
 * Shortcuts should work with capslock active or inactive

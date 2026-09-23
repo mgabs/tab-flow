@@ -23,12 +23,12 @@ struct RemoteLicenseClient: LicenseAPI {
         if let trialStart = LicenseManager.shared.trialStartDate {
             body["trial_started_at"] = Int(trialStart.timeIntervalSince1970)
         }
-        Logger.debug { "alt-tab-backend POST \(baseUrl)/activate" }
+        Logger.debug { "tabflow-backend POST \(baseUrl)/activate" }
         post("activate", body: body) { (result: Result<ActivateResponse, Error>) in
             switch result {
             case .success(let response):
                 if response.activated {
-                    Logger.debug { "alt-tab-backend activate OK: activated=true, variant_id=\(response.variant_id ?? "nil"), instance_id=\(response.instance_id ?? "nil")" }
+                    Logger.debug { "tabflow-backend activate OK: activated=true, variant_id=\(response.variant_id ?? "nil"), instance_id=\(response.instance_id ?? "nil")" }
                     guard let instanceId = response.instance_id else {
                         completion(.failure(LicenseAPIError.invalidResponse(debugInfo: "missing instance_id")))
                         return
@@ -40,7 +40,7 @@ struct RemoteLicenseClient: LicenseAPI {
                     )))
                     return
                 }
-                Logger.debug { "alt-tab-backend activate KO: activated=false, error=\(response.error ?? "nil")" }
+                Logger.debug { "tabflow-backend activate KO: activated=false, error=\(response.error ?? "nil")" }
                 switch response.error {
                 case "invalid_key":
                     completion(.failure(LicenseAPIError.invalidKey))
@@ -53,7 +53,7 @@ struct RemoteLicenseClient: LicenseAPI {
                     completion(.failure(LicenseAPIError.activationRejected("unknown")))
                 }
             case .failure(let error):
-                Logger.debug { "alt-tab-backend activate KO: \(error)" }
+                Logger.debug { "tabflow-backend activate KO: \(error)" }
                 completion(.failure(error))
             }
         }
@@ -64,14 +64,14 @@ struct RemoteLicenseClient: LicenseAPI {
             "license_key": licenseKey,
             "instance_id": instanceId,
         ]
-        Logger.debug { "alt-tab-backend POST \(baseUrl)/validate" }
+        Logger.debug { "tabflow-backend POST \(baseUrl)/validate" }
         post("validate", body: body) { (result: Result<ValidateResponse, Error>) in
             switch result {
             case .success(let response):
-                Logger.debug { "alt-tab-backend validate \(response.valid ? "OK" : "KO"): valid=\(response.valid), variant_id=\(response.variant_id ?? "nil")" }
+                Logger.debug { "tabflow-backend validate \(response.valid ? "OK" : "KO"): valid=\(response.valid), variant_id=\(response.variant_id ?? "nil")" }
                 completion(.success(ValidateResult(valid: response.valid, variantId: response.variant_id)))
             case .failure(let error):
-                Logger.debug { "alt-tab-backend validate KO: \(error)" }
+                Logger.debug { "tabflow-backend validate KO: \(error)" }
                 completion(.failure(error))
             }
         }
@@ -82,19 +82,19 @@ struct RemoteLicenseClient: LicenseAPI {
             "license_key": licenseKey,
             "instance_id": instanceId,
         ]
-        Logger.debug { "alt-tab-backend POST \(baseUrl)/deactivate" }
+        Logger.debug { "tabflow-backend POST \(baseUrl)/deactivate" }
         post("deactivate", body: body) { (result: Result<DeactivateResponse, Error>) in
             switch result {
             case .success(let response):
                 if response.deactivated {
-                    Logger.debug { "alt-tab-backend deactivate OK: deactivated=true" }
+                    Logger.debug { "tabflow-backend deactivate OK: deactivated=true" }
                     completion(.success(()))
                 } else {
-                    Logger.debug { "alt-tab-backend deactivate KO: deactivated=false, error=\(response.error ?? "nil")" }
+                    Logger.debug { "tabflow-backend deactivate KO: deactivated=false, error=\(response.error ?? "nil")" }
                     completion(.failure(LicenseAPIError.deactivationRejected))
                 }
             case .failure(let error):
-                Logger.debug { "alt-tab-backend deactivate KO: \(error)" }
+                Logger.debug { "tabflow-backend deactivate KO: \(error)" }
                 completion(.failure(error))
             }
         }
@@ -115,7 +115,7 @@ struct RemoteLicenseClient: LicenseAPI {
             } catch {
                 let bodyString = String(data: data, encoding: .utf8) ?? "<non-UTF8 data, \(data.count) bytes>"
                 let statusCode = (response as? HTTPURLResponse)?.statusCode
-                Logger.error { "alt-tab-backend \(endpoint) failed: decodingError=\(error), statusCode=\(statusCode.map(String.init) ?? "nil"), body=\(bodyString)" }
+                Logger.error { "tabflow-backend \(endpoint) failed: decodingError=\(error), statusCode=\(statusCode.map(String.init) ?? "nil"), body=\(bodyString)" }
                 let debugInfo = "statusCode=\(statusCode.map(String.init) ?? "nil"), body=\(bodyString)"
                 if let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
                    let errorMessage = json["error"] as? String {
