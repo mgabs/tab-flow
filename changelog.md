@@ -1,3 +1,11 @@
+# [1.0.0](https://github.com/mgabs/tab-flow/compare/v11.6.0...v1.0.0) (2026-09-23)
+
+
+### Features
+
+* initial TabFlow 1.0.0 release: full app rebranding to TabFlow (`com.mgabs.tabflow-macos`), new glassmorphism app icon & brand identity, removed paywall/license components, updated Homebrew cask (`mgabs/homebrew-tap`).
+
+
 # [11.6.0](https://github.com/lwouis/alt-tab-macos/compare/v11.5.0...v11.6.0) (2026-09-05)
 
 
