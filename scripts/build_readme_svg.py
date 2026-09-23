@@ -180,7 +180,7 @@ def build_svg(screenshot_b64: str) -> str:
     </svg>
   </g>
 
-  <text x="330" y="120" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="700" font-size="56" fill="#ffffff" letter-spacing="-1.5">AltTab <tspan fill="url(#proGrad)">Pro</tspan></text>
+  <text x="330" y="120" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="700" font-size="56" fill="#ffffff" letter-spacing="-1.5">TabFlow</text>
 
   <text x="330" y="158" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="400" font-size="22" fill="#8888a8">See every window. Switch in an instant.</text>
 
@@ -241,14 +241,14 @@ def build_svg(screenshot_b64: str) -> str:
 
   <g transform="translate(372 365)">
     <rect width="156" height="56" rx="28" fill="url(#ctaGrad)"/>
-    <text x="78" y="36" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="700" font-size="22" fill="#ffffff" filter="url(#ctaShadow)">Get AltTab</text>
+    <text x="78" y="36" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="700" font-size="22" fill="#ffffff" filter="url(#ctaShadow)">Get TabFlow</text>
   </g>
 
   <image href="data:image/jpeg;base64,{screenshot_b64}" x="40" y="455" width="820" height="461" clip-path="url(#screenshotClip)" preserveAspectRatio="xMidYMid slice"/>
 
   <g transform="translate(372 950)">
     <rect width="156" height="56" rx="28" fill="url(#ctaGrad)"/>
-    <text x="78" y="36" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="700" font-size="22" fill="#ffffff" filter="url(#ctaShadow)">Get AltTab</text>
+    <text x="78" y="36" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="700" font-size="22" fill="#ffffff" filter="url(#ctaShadow)">Get TabFlow</text>
   </g>
 </svg>
 '''

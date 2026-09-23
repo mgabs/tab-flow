@@ -25,7 +25,7 @@ env:
   BUILD_DIR: ${{ github.workspace }}
   XCODE_BUILD_PATH: DerivedData/Build/Products/Release
   VERSION_FILE: VERSION.txt
-  APP_NAME: AltTab
+  APP_NAME: TabFlow
 jobs:
   build:
     runs-on: macos-15 # all options: https://github.com/actions/runner-images/tree/main
