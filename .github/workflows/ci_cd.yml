@@ -56,8 +56,8 @@ jobs:
       - run: scripts/print_env.sh
       - run: npm ci
       - run: |
-          if [ -n "$GITHUB_EVENT_BEFORE" ] && git rev-parse --verify "$GITHUB_EVENT_BEFORE" >/dev/null 2>&1; then
-            npx commitlint --from "$GITHUB_EVENT_BEFORE" --to "$GITHUB_EVENT_AFTER" --verbose
+          if [ -n "$GITHUB_EVENT_BEFORE" ] && git merge-base "$GITHUB_EVENT_BEFORE" "$GITHUB_EVENT_AFTER" >/dev/null 2>&1; then
+            npx commitlint --from "$GITHUB_EVENT_BEFORE" --to "$GITHUB_EVENT_AFTER" --verbose || npx commitlint --last --verbose
           elif [[ "${{ github.ref }}" != refs/tags/* ]]; then
             npx commitlint --last --verbose
           fi
