@@ -198,43 +198,15 @@ final class QAMenu: NSPanel {
         proSectionContent.addArrangedSubview(mockDayRow)
         proSectionContent.setCustomSpacing(Self.sectionSpacing, after: mockDayRow)
 
-        proSectionContent.addArrangedSubview(sectionLabel("Show window/popover for Day:"))
-
-        let showRow1 = NSStackView(views: [
-            makeButton("1 Welcome (new)") {
-                Day1WelcomeLetterWindow.shared?.close()
-                Day1WelcomeLetterWindow.shared = nil
-                Day1WelcomeLetterWindow.show(forceFreshInstall: true)
-            },
-            makeButton("1 Welcome (upgrade)") {
-                Day1WelcomeLetterWindow.shared?.close()
-                Day1WelcomeLetterWindow.shared = nil
-                Day1WelcomeLetterWindow.show(forceFreshInstall: false)
-            },
-            makeButton("4 Tour") { Day4TourPopover.show() },
-            makeButton("12 HeadsUp") { Day12HeadsUpPopover.show() },
+        proSectionContent.addArrangedSubview(sectionLabel("Mock Pro:"))
+        let mockRow = NSStackView(views: [
+            makeButton("Mock Pro State") { LicenseManager.shared.mockProUser() },
+            makeButton("Revalidate License") { LicenseManager.shared.revalidateWithServer() },
         ])
-        showRow1.orientation = .horizontal
-        showRow1.spacing = 4
-        proSectionContent.addArrangedSubview(showRow1)
-
-        let showRow2 = NSStackView(views: [
-            makeButton("15 FullUpgrade") { ProTransitionManager.shared.showFullUpgradeWindow() },
-            makeButton("15 Proactive") { ProTransitionManager.shared.showProactiveDay15Window() },
-            makeButton("15 HardGate") { Day15HardGatePopover.show() },
-        ])
-        showRow2.orientation = .horizontal
-        showRow2.spacing = 4
-        proSectionContent.addArrangedSubview(showRow2)
-
-        let showRow3 = NSStackView(views: [
-            makeButton("21 Reminder") { Day21ReminderPopover.show() },
-            makeButton("35 Final") { Day35FinalWindow.show() },
-        ])
-        showRow3.orientation = .horizontal
-        showRow3.spacing = 4
-        proSectionContent.addArrangedSubview(showRow3)
-        proSectionContent.setCustomSpacing(Self.sectionSpacing, after: showRow3)
+        mockRow.orientation = .horizontal
+        mockRow.spacing = 4
+        proSectionContent.addArrangedSubview(mockRow)
+        proSectionContent.setCustomSpacing(Self.sectionSpacing, after: mockRow)
 
         proSectionContent.addArrangedSubview(sectionLabel("Reset:"))
         let resetRow1 = NSStackView(views: [

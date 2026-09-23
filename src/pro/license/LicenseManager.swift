@@ -61,9 +61,6 @@ class LicenseManager {
 
     var isProAvailable: Bool { state.isProAvailable }
 
-    /// Pro features are locked out as soon as the license is no longer valid. Degradable Pro
-    /// preferences are downgraded to their Free equivalents immediately via
-    /// `ProTransitionManager.onProLockEngaged()`, wired to the state-change hook in App.swift.
     var isProLocked: Bool {
         switch state {
         case .pro, .trial: return false

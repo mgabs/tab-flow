@@ -237,20 +237,11 @@ class App: AppCenterApplication {
     /// "now" for the Welcome prompt. Kept narrow on purpose: the other Day-X prompts are gated by
     /// trial age and don't fire on the very first launch.
     private static func willShowDay1WelcomeOnAppLaunch() -> Bool {
-        if case .pro = LicenseManager.shared.state { return false }
-        return !ProTransitionManager.shared.hasSeenWelcome
+        return false
     }
 
     private static func deferFirstLaunchSettingsUntilDay1WelcomeCloses() {
-        firstLaunchSettingsObserver = NotificationCenter.default.addObserver(
-            forName: NSWindow.willCloseNotification, object: nil, queue: .main) { notification in
-            guard notification.object is Day1WelcomeLetterWindow else { return }
-            if let observer = firstLaunchSettingsObserver {
-                NotificationCenter.default.removeObserver(observer)
-                firstLaunchSettingsObserver = nil
-            }
-            DispatchQueue.main.async { showAndCenterSettingsWindowOnFirstLaunch() }
-        }
+        showAndCenterSettingsWindowOnFirstLaunch()
     }
 
     /// `showSettingsWindow()` relies on a saved autosave frame to position the window. On first

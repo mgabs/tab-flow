@@ -14,16 +14,22 @@ class PreferencesMigrations {
         }
     }
 
+    static func isValidVersion(_ v: String) -> Bool {
+        !v.isEmpty && v != "#VERSION#" && !v.contains("$")
+    }
+
     static func migratePreferences() {
         let preferencesKey = "preferencesVersion"
         let existingVersion = Self.defaults.string(forKey: preferencesKey)
         ProTransitionState.markFreshInstallIfUnknown(existingVersion == nil)
-        if let versionInPlist = existingVersion {
-            if versionInPlist != "#VERSION#" && versionInPlist.compare(App.version, options: .numeric) != .orderedDescending {
+        if let versionInPlist = existingVersion, isValidVersion(versionInPlist), isValidVersion(App.version) {
+            if versionInPlist.compare(App.version, options: .numeric) != .orderedDescending {
                 updateToNewPreferences(versionInPlist)
             }
         }
-        Self.defaults.set(App.version, forKey: preferencesKey)
+        if isValidVersion(App.version) {
+            Self.defaults.set(App.version, forKey: preferencesKey)
+        }
     }
 
     static func updateToNewPreferences(_ versionInPlist: String) {

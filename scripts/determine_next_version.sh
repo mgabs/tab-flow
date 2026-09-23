@@ -12,4 +12,4 @@ else
   version="1.0.0"
 fi
 
-echo "$version" > "$VERSION_FILE"
+echo "$version" > "${VERSION_FILE:-VERSION.txt}"

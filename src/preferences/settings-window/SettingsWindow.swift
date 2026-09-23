@@ -515,6 +515,7 @@ class SettingsWindow: NSWindow {
         upgradeButton.target = self
         upgradeButton.action = #selector(upgradeButtonClicked)
         upgradeButton.translatesAutoresizingMaskIntoConstraints = false
+        upgradeButton.isHidden = true
         parent.addSubview(upgradeButton)
         // Align with the sidebar source-list highlight: the scroll view sits flush against the
         // sidebar edges and `.sourceList` adds its own ~10pt internal inset, so the highlight
@@ -1172,6 +1173,7 @@ class SettingsWindow: NSWindow {
 
     func refreshUpgradeButton() {
         upgradeButton.refreshTitle()
+        upgradeButton.isHidden = true
     }
 
     private func selectSection(_ section: SettingsSection, scroll: Bool, selectInSidebar: Bool = true) {
