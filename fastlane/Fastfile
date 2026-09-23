@@ -1,6 +1,6 @@
 default_platform(:mac)
 
-XCODE_PROJECT = "alt-tab-macos.xcodeproj"
+XCODE_PROJECT = "tab-flow-macos.xcodeproj"
 DERIVED_DATA_PATH = "DerivedData"
 APP_NAME = ENV["APP_NAME"] || "TabFlow"
 XCODE_BUILD_PATH = ENV["XCODE_BUILD_PATH"] || "#{DERIVED_DATA_PATH}/Build/Products/Release"

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 xcodebuild \
-  -project alt-tab-macos.xcodeproj \
+  -project tab-flow-macos.xcodeproj \
   -scheme Debug \
   -configuration Debug \
   -derivedDataPath DerivedData
