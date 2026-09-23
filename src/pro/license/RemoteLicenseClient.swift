@@ -1,6 +1,6 @@
 import Foundation
 
-/// Talks to our own licensing backend at `alt-tab.app/v1/license/*`. Provider-agnostic:
+/// Talks to our own licensing backend at `tabflow.app/v1/license/*`. Provider-agnostic:
 /// the backend's active payment provider is a deployment-time choice that this client
 /// never sees. Same wire format regardless of who's actually handling payments.
 struct RemoteLicenseClient: LicenseAPI {

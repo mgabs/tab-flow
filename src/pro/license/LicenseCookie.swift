@@ -1,6 +1,6 @@
 import Foundation
 
-/// Writes a `license` cookie on the alt-tab.app domain so Sparkle's appcast request can be tailored per tier.
+/// Writes a `license` cookie on the tabflow.app domain so Sparkle's appcast request can be tailored per tier.
 /// Called from App.swift's `onStateChanged` hook after every LicenseManager state transition.
 func syncLicenseCookie(state: LicenseState) {
     guard let host = URL(string: Endpoints.website)?.host else { return }
