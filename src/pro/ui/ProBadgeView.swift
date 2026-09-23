@@ -282,6 +282,7 @@ class ProBadgeView: NSView {
         textLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         let badge = ProBadgeView()
         badge.setSelected(selected)
+        badge.isHidden = true
         segmentedControl.addSubview(iconView)
         segmentedControl.addSubview(textLabel)
         segmentedControl.addSubview(badge)
@@ -338,6 +339,7 @@ class ProBadgeView: NSView {
 
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
+        isHidden = true
         // Register the "Pro" tag with the search index if a section build is in progress —
         // mirrors what the post-construction walk in `SettingsWindow.collectSearchContent` does
         // when it spots a `ProBadgeView`, just without needing the walk to find it after.
