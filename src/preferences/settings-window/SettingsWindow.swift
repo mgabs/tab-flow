@@ -130,11 +130,6 @@ private final class SettingsSidebarCellView: NSTableCellView {
     }
 }
 
-final class UpgradeButton: NSButton {
-    func refreshTitle() {}
-    func playShineAnimation() {}
-}
-
 private final class SettingsFlippedView: NSView {
     override var isFlipped: Bool { true }
 }
@@ -221,16 +216,11 @@ class SettingsWindow: NSWindow {
     private let rightScrollView = NSScrollView()
     private let sectionsDocumentView = SettingsFlippedView(frame: .zero)
     private let sectionsStack = NSStackView()
-    private let upgradeButton = UpgradeButton()
     private let quitButton = NSButton(title: String(format: NSLocalizedString("Quit %@", comment: "%@ is AltTab"), App.name), target: nil, action: #selector(NSApplication.terminate(_:)))
     private var sections = [SettingsSection]()
     private var visibleSections = [SettingsSection]()
     private var selectedSectionId: String?
-    private var upgradeContentView: NSView?
-    private var isShowingUpgradeView = false
     private var sectionsStackBottomConstraint: NSLayoutConstraint!
-    private var upgradeViewBottomConstraint: NSLayoutConstraint?
-    private var hasPlayedShine = false
     private var sheetHighlightTargets = [ObjectIdentifier: [SettingsSearchHighlightTarget]]()
     private var liveResizeOriginX: CGFloat?
     private var sectionSelectionTriggerRatio = SettingsWindow.sectionSelectionTriggerRatioWhenScrollingDown
@@ -316,7 +306,6 @@ class SettingsWindow: NSWindow {
     private func setupSidebar() {
         setupSearchField(sidebarContainer)
         setupQuitButton(sidebarContainer)
-        setupUpgradeButton(sidebarContainer)
         setupSidebarTable(sidebarContainer)
         // Match macOS System Settings: Tab cycles between the search field and the sidebar
         // table only. The nextValidKeyView overrides on these two subclasses keep AppKit's
@@ -428,31 +417,8 @@ class SettingsWindow: NSWindow {
             // too far in.
             sidebarScrollView.leadingAnchor.constraint(equalTo: parent.leadingAnchor),
             sidebarScrollView.trailingAnchor.constraint(equalTo: parent.trailingAnchor),
-            sidebarScrollView.bottomAnchor.constraint(equalTo: upgradeButton.topAnchor, constant: -10),
+            sidebarScrollView.bottomAnchor.constraint(equalTo: quitButton.topAnchor, constant: -10),
         ])
-    }
-
-    private func setupUpgradeButton(_ parent: NSView) {
-        upgradeButton.target = self
-        upgradeButton.action = #selector(upgradeButtonClicked)
-        upgradeButton.translatesAutoresizingMaskIntoConstraints = false
-        upgradeButton.isHidden = true
-        parent.addSubview(upgradeButton)
-        // Align with the sidebar source-list highlight: the scroll view sits flush against the
-        // sidebar edges and `.sourceList` adds its own ~10pt internal inset, so the highlight
-        // pill ends up at `sidebarHorizontalPadding` from each edge — same as the search field.
-        // The upgrade button matches that same edge.
-        let inset = Self.sidebarHorizontalPadding
-        NSLayoutConstraint.activate([
-            upgradeButton.centerXAnchor.constraint(equalTo: parent.centerXAnchor),
-            upgradeButton.bottomAnchor.constraint(equalTo: quitButton.topAnchor, constant: -20),
-            upgradeButton.leadingAnchor.constraint(equalTo: parent.leadingAnchor, constant: inset),
-            upgradeButton.trailingAnchor.constraint(equalTo: parent.trailingAnchor, constant: -inset),
-        ])
-    }
-
-    @objc private func upgradeButtonClicked() {
-        showUpgradeView()
     }
 
     private func setupQuitButton(_ parent: NSView) {
@@ -995,7 +961,6 @@ class SettingsWindow: NSWindow {
     }
 
     @objc private func contentViewBoundsDidChange(_ notification: Notification) {
-        guard !isShowingUpgradeView else { return }
         let currentY = rightScrollView.contentView.bounds.minY
         if isProgrammaticScrollInProgress {
             lastContentScrollY = currentY
@@ -1051,19 +1016,10 @@ class SettingsWindow: NSWindow {
         }
     }
 
-    func showUpgradeView() {
-    }
-
-    private func hideUpgradeView() {
-    }
-
     func refreshUpgradeButton() {
-        upgradeButton.refreshTitle()
-        upgradeButton.isHidden = true
     }
 
     private func selectSection(_ section: SettingsSection, scroll: Bool, selectInSidebar: Bool = true) {
-        hideUpgradeView()
         selectedSectionId = section.id
         if selectInSidebar, let row = visibleSections.firstIndex(where: { $0.id == section.id }), sidebarTableView.selectedRow != row {
             sidebarTableView.selectRowIndexes(IndexSet(integer: row), byExtendingSelection: false)
@@ -1117,7 +1073,6 @@ class SettingsWindow: NSWindow {
     }
 
     override func close() {
-        hasPlayedShine = false
         hideAppIfLastWindowIsClosed()
         super.close()
     }
@@ -1140,11 +1095,6 @@ extension SettingsWindow: NSWindowDelegate {
 
     func windowDidBecomeKey(_ notification: Notification) {
         LicenseManager.shared.refreshState()
-        guard !hasPlayedShine else { return }
-        hasPlayedShine = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
-            self?.upgradeButton.playShineAnimation()
-        }
     }
 
     func windowWillClose(_ notification: Notification) {
