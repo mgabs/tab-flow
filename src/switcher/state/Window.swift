@@ -372,8 +372,10 @@ class Window {
             WindowThumbnails.previewSelectedIfNeeded()
         } else if self.isWindowlessApp || cgWindowId == nil {
             if let bundleUrl = application.bundleURL, self.isWindowlessApp {
-                if (try? NSWorkspace.shared.launchApplication(at: bundleUrl, configuration: [:])) == nil {
-                    application.runningApplication.activate(options: .activateAllWindows)
+                NSWorkspace.shared.openApplication(at: bundleUrl, configuration: NSWorkspace.OpenConfiguration()) { [weak self] _, error in
+                    if error != nil {
+                        self?.application.runningApplication.activate(options: .activateAllWindows)
+                    }
                 }
             } else {
                 application.runningApplication.activate(options: .activateAllWindows)

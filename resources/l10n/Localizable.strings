@@ -256,9 +256,6 @@
 /* No comment provided by engineer. */
 "Get more from AltTab with Pro" = "Get more from AltTab with Pro";
 
-/* Menubar option */
-"Get Pro" = "Get Pro";
-
 /* No comment provided by engineer. */
 "Go back" = "Go back";
 
@@ -326,9 +323,6 @@
 "Later" = "Later";
 
 /* No comment provided by engineer. */
-"License doesn't cover this version" = "License doesn't cover this version";
-
-/* No comment provided by engineer. */
 "Light" = "Light";
 
 /* No comment provided by engineer. */
@@ -357,9 +351,6 @@
 
 /* No comment provided by engineer. */
 "Multiple screens" = "Multiple screens";
-
-/* No comment provided by engineer. */
-"My Account" = "My Account";
 
 /* No comment provided by engineer. */
 "Never" = "Never";
@@ -660,12 +651,6 @@
 
 /* No comment provided by engineer. */
 "Trackpad haptic feedback" = "Trackpad haptic feedback";
-
-/* No comment provided by engineer. */
-"Trial expired" = "Trial expired";
-
-/* No comment provided by engineer. */
-"Trial: %d days remaining" = "Trial: %d days remaining";
 
 /* No comment provided by engineer. */
 "Trigger" = "Trigger";

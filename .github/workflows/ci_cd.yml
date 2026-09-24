@@ -2,15 +2,18 @@ on:
   push:
     branches:
       - master
+      - 'rebrand/*'
     tags:
       - 'v*'
   pull_request:
     branches:
       - master
+
 permissions:
   contents: write
   issues: write
   pull-requests: write
+
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   APPCENTER_SECRET: ${{ secrets.APPCENTER_SECRET }}
@@ -26,9 +29,11 @@ env:
   XCODE_BUILD_PATH: DerivedData/Build/Products/Release
   VERSION_FILE: VERSION.txt
   APP_NAME: TabFlow
+
 jobs:
-  build:
-    runs-on: macos-15 # all options: https://github.com/actions/runner-images/tree/main
+  test:
+    name: Test Stage (Lint, Unit Tests & Mutation Tests)
+    runs-on: macos-26
     steps:
       - id: pre-checkout
         env:
@@ -49,41 +54,119 @@ jobs:
         with:
           node-version: 22
           cache: 'npm'
-      - run: |
-          if [ -d "/Applications/Xcode_26.0.1.app" ]; then
+      - name: Select Xcode Version
+        run: |
+          if [ -d "/Applications/Xcode_26.6.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_26.6.app/Contents/Developer
+          elif [ -d "/Applications/Xcode_26.5.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_26.5.app/Contents/Developer
+          elif [ -d "/Applications/Xcode_26.0.1.app" ]; then
             sudo xcode-select -s /Applications/Xcode_26.0.1.app/Contents/Developer
+          elif [ -d "/Applications/Xcode_26.0.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_26.0.app/Contents/Developer
+          elif ls -d /Applications/Xcode_26*.app >/dev/null 2>&1; then
+            sudo xcode-select -s "$(ls -d /Applications/Xcode_26*.app | tail -n 1)/Contents/Developer"
+          elif [ -d "/Applications/Xcode.app" ]; then
+            sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
           fi
-      - run: scripts/print_env.sh
+          xcodebuild -version
       - run: npm ci
-      - run: |
+      - name: Run Commit Lint
+        run: |
           if [ -n "$GITHUB_EVENT_BEFORE" ] && git merge-base "$GITHUB_EVENT_BEFORE" "$GITHUB_EVENT_AFTER" >/dev/null 2>&1; then
             npx commitlint --from "$GITHUB_EVENT_BEFORE" --to "$GITHUB_EVENT_AFTER" --verbose || npx commitlint --last --verbose
           elif [[ "${{ github.ref }}" != refs/tags/* ]]; then
             npx commitlint --last --verbose
           fi
-      - run: scripts/ensure_generated_files_are_up_to_date.sh
+      - name: Ensure Generated Files Are Up To Date
+        run: scripts/ensure_generated_files_are_up_to_date.sh
+      - name: Run Unit Tests with Coverage
+        run: scripts/run_tests.sh
+      - name: Run Mutation Tests
+        run: scripts/run_mutation_tests.sh
+
+  build:
+    name: Build Stage (Compile App)
+    needs: test
+    if: "!startsWith(github.ref, 'refs/tags/')"
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v6
+      - name: Select Xcode Version
+        run: |
+          if [ -d "/Applications/Xcode_26.6.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_26.6.app/Contents/Developer
+          elif [ -d "/Applications/Xcode_26.5.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_26.5.app/Contents/Developer
+          elif [ -d "/Applications/Xcode_26.0.1.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_26.0.1.app/Contents/Developer
+          elif [ -d "/Applications/Xcode_26.0.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_26.0.app/Contents/Developer
+          elif ls -d /Applications/Xcode_26*.app >/dev/null 2>&1; then
+            sudo xcode-select -s "$(ls -d /Applications/Xcode_26*.app | tail -n 1)/Contents/Developer"
+          elif [ -d "/Applications/Xcode.app" ]; then
+            sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+          fi
+          xcodebuild -version
+      - run: scripts/print_env.sh
       - run: scripts/determine_next_version.sh
       - run: scripts/replace_environment_variables_in_app.sh
-      - run: scripts/codesign/setup_ci_master.sh
+      - name: Setup Code Signing Keychains
+        run: scripts/codesign/setup_ci_master.sh
         if: github.event_name == 'push'
-      - run: scripts/run_tests.sh
-      - run: scripts/build_app.sh
-      - run: scripts/package_and_notarize_release.sh
-        if: startsWith(github.ref, 'refs/tags/')
-      - run: scripts/upload_symbols_to_appcenter.sh
-        if: startsWith(github.ref, 'refs/tags/')
-      - run: scripts/update_appcast.sh
-        if: startsWith(github.ref, 'refs/tags/')
+      - name: Build Release Application
+        run: scripts/build_app.sh
+
+  release:
+    name: Build & Release Stage (Build, Notarize & Publish)
+    needs: test
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: 'npm'
+      - name: Select Xcode Version
+        run: |
+          if [ -d "/Applications/Xcode_26.6.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_26.6.app/Contents/Developer
+          elif [ -d "/Applications/Xcode_26.5.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_26.5.app/Contents/Developer
+          elif [ -d "/Applications/Xcode_26.0.1.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_26.0.1.app/Contents/Developer
+          elif [ -d "/Applications/Xcode_26.0.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_26.0.app/Contents/Developer
+          elif ls -d /Applications/Xcode_26*.app >/dev/null 2>&1; then
+            sudo xcode-select -s "$(ls -d /Applications/Xcode_26*.app | tail -n 1)/Contents/Developer"
+          elif [ -d "/Applications/Xcode.app" ]; then
+            sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+          fi
+          xcodebuild -version
+      - run: scripts/print_env.sh
+      - run: scripts/determine_next_version.sh
+      - run: scripts/replace_environment_variables_in_app.sh
+      - name: Setup Code Signing Keychains
+        run: scripts/codesign/setup_ci_master.sh
+      - name: Build Application
+        run: scripts/build_app.sh
+      - name: Package & Notarize Release
+        run: scripts/package_and_notarize_release.sh
+      - name: Upload Symbols to AppCenter
+        run: scripts/upload_symbols_to_appcenter.sh
+      - name: Update Sparkle Appcast
+        run: scripts/update_appcast.sh
       - id: set_release_info
+        name: Extract Latest Changelog
         run: scripts/extract_latest_changelog.sh
-        if: startsWith(github.ref, 'refs/tags/')
-      - uses: softprops/action-gh-release@v3
-        if: startsWith(github.ref, 'refs/tags/')
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ github.ref_name }}
           body: ${{ steps.set_release_info.outputs.body }}
           files: ${{ env.XCODE_BUILD_PATH }}/*.zip
-      - run: scripts/update_website.sh
-        if: startsWith(github.ref, 'refs/tags/')
+      - name: Dispatch Website Update
+        run: scripts/update_website.sh
         env:
           GH_TOKEN: ${{ secrets.WEBSITE_DISPATCH_TOKEN }}

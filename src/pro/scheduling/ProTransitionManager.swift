@@ -158,7 +158,7 @@ class ProTransitionManager {
     var hasTriggeredPostExpirationSwitcher: Bool { get { state.hasTriggeredPostExpirationSwitcher } set { state.hasTriggeredPostExpirationSwitcher = newValue } }
 
     var shouldShowBadgeDot: Bool {
-        ProTransitionManagerTestable.shouldShowBadgeDot(currentState())
+        false
     }
 
     // MARK: - Lifecycle
