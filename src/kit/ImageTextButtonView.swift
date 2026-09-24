@@ -171,17 +171,11 @@ class ImageTextButtonView: NSStackView {
     func updateStyle() {
         let isSelected = button.state == .on
         let isKey = window?.isKeyWindow ?? false
-        let selectedColor: NSColor
-        if #available(macOS 10.14, *) {
-            selectedColor = isKey ? NSColor.systemAccentColor : NSColor.unemphasizedSelectedContentBackgroundColor
-        } else {
-            selectedColor = isKey ? NSColor.systemAccentColor : NSColor.lightGray
-        }
-        let previousAppearance = NSAppearance.current
-        NSAppearance.current = effectiveAppearance
+        let selectedColor = isKey ? NSColor.systemAccentColor : NSColor.unemphasizedSelectedContentBackgroundColor
         let borderColor: NSColor = isSelected ? selectedColor : NSColor.lightGray.withAlphaComponent(0.3)
-        button.layer?.borderColor = borderColor.cgColor
-        NSAppearance.current = previousAppearance
+        effectiveAppearance.performAsCurrentDrawingAppearance {
+            button.layer?.borderColor = borderColor.cgColor
+        }
         button.layer?.borderWidth = ImageTextButtonView.borderWidth
         label.font = isSelected ? NSFont.boldSystemFont(ofSize: 12) : NSFont.systemFont(ofSize: 12)
         alphaValue = isPressed ? 0.7 : 1.0
