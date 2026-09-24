@@ -25,3 +25,4 @@ codesign.p12
 /vendor/bundle/
 /.bundle/
 /.worktrees/
+.bundle/

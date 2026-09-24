@@ -10,4 +10,4 @@ if [ -z "${APPLE_P12_CERTIFICATE:-}" ] && ! grep -q "CODE_SIGN_IDENTITY" config/
   SIGNING_FLAGS="CODE_SIGN_IDENTITY= CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO"
 fi
 
-set -o pipefail && xcodebuild test -project tab-flow-macos.xcodeproj -scheme Test -configuration Release -enableCodeCoverage YES $SIGNING_FLAGS | scripts/xcbeautify
+set -o pipefail && xcodebuild test -project tab-flow-macos.xcodeproj -scheme Test -configuration Release $SIGNING_FLAGS | scripts/xcbeautify
