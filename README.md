@@ -127,13 +127,19 @@ xcodebuild -project tab-flow-macos.xcodeproj -scheme Debug -configuration Debug 
 
 ---
 
-## 🤝 Project Support
+## 🕊️ Donating
 
-<div align="center">
-  <a href="https://jb.gg/OpenSource">
-    <img src="docs/readme/sponsor.svg" alt="Sponsored by JetBrains" width="900"/>
-  </a>
-</div>
+TabFlow is free and always will be. If you want to show appreciation, please give instead to humanitarian relief for Gaza and Palestine. These organisations deliver food, water, shelter, and medical care on the ground:
+
+* [UNRWA](https://www.unrwa.org/) — UN Relief and Works Agency for Palestine Refugees
+* [Palestine Children's Relief Fund](https://www.pcrf.net/)
+* [Palestine Red Crescent Society](https://www.palestinercs.org/)
+* [Medical Aid for Palestinians](https://www.map.org.uk/)
+* [Anera](https://www.anera.org/)
+* [Médecins Sans Frontières](https://www.msf.org/)
+* [International Committee of the Red Cross](https://www.icrc.org/)
+* [UNICEF](https://www.unicef.org/)
+* [World Food Programme](https://www.wfp.org/)
 
 ---
 
