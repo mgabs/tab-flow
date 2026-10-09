@@ -119,10 +119,10 @@ cd tab-flow
 scripts/codesign/setup_local.sh
 
 # Build Debug app
-xcodebuild -project tab-flow-macos.xcodeproj -scheme Debug -configuration Debug -derivedDataPath DerivedData
+make build
 
 # Run Unit Tests
-./scripts/run_tests.sh
+make test
 ```
 
 ---

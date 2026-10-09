@@ -25,7 +25,7 @@ A wrong comment costs several times more than a missing one, for humans and agen
 - Run `/rework-comments` to audit or rework comments across a file, a folder, or all of `src/`.
 
 # Workflow
-- Copy commands from ai/build.sh and run them, to confirm compilation works after you're done with implementing a change
+- Run `make` (or `make test`) to confirm compilation and tests work after you're done with implementing a change
 - Git commit messages must respect our pre-hook conventions, and must be clear and high-level, written for end-users (changelog)
 
 # License / Keychain invariant

@@ -27,7 +27,7 @@ run_mutant_test() {
 
   # Run unit tests expecting failure
   set +e
-  ./scripts/run_tests.sh > /dev/null 2>&1
+  make test > /dev/null 2>&1
   local test_result=$?
   set -e
 

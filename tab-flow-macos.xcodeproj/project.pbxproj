@@ -578,7 +578,6 @@
 		5FC0B4352F8F6ECB00DCC310 /* changelog.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = changelog.md; sourceTree = "<group>"; };
 		5FC0B4362F8F6EE500DCC310 /* frontpage.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = frontpage.jpg; sourceTree = "<group>"; };
 		5FC0B4372F8F6EE500DCC310 /* jetbrains.svg */ = {isa = PBXFileReference; lastKnownFileType = text; path = jetbrains.svg; sourceTree = "<group>"; };
-		5FC0B4382F8F6F6D00DCC310 /* build.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = build.sh; sourceTree = "<group>"; };
 		5FC0B4392F8F6F6D00DCC310 /* profile.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = profile.sh; sourceTree = "<group>"; };
 		5FC0B43A2F8F6F6D00DCC310 /* run.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = run.sh; sourceTree = "<group>"; };
 		5FE2AF752EAE849F004A4AC5 /* xcbeautify */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = xcbeautify; sourceTree = "<group>"; };
@@ -638,10 +637,8 @@
 		BF0C896FD4907CD85D62C124 /* WindowlessAppIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowlessAppIndicator.swift; sourceTree = "<group>"; };
 		BF0C8998862E0E04D60CACBC /* MacroPreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MacroPreferences.swift; sourceTree = "<group>"; };
 		BF0C899905524253DC170B56 /* KeyboardEventsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardEventsTests.swift; sourceTree = "<group>"; };
-		BF0C89D7F23D82A3FF442E0B /* build_app.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = build_app.sh; sourceTree = "<group>"; };
 		BF0C89F6EA16DD7322626E20 /* FUNDING.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = FUNDING.yml; sourceTree = "<group>"; };
 		BF0C8A1E7D3F94B6E8C52A01 /* Throttler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Throttler.swift; sourceTree = "<group>"; };
-		BF0C8A261AAA42191426A587 /* run_tests.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = run_tests.sh; sourceTree = "<group>"; };
 		BF0C8A479D2B7FB80531F037 /* PopupButtonLikeSystemSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupButtonLikeSystemSettings.swift; sourceTree = "<group>"; };
 		BF0C8B2C057099EDABE46779 /* Button.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		BF0C8B2C6D4E8FA012345678 /* SleepWakeEvents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SleepWakeEvents.swift; sourceTree = "<group>"; };
@@ -1056,7 +1053,6 @@
 		5FC0B43B2F8F6F6D00DCC310 /* ai */ = {
 			isa = PBXGroup;
 			children = (
-				5FC0B4382F8F6F6D00DCC310 /* build.sh */,
 				5FC0B4392F8F6F6D00DCC310 /* profile.sh */,
 				5FC0B43A2F8F6F6D00DCC310 /* run.sh */,
 			);
@@ -1626,8 +1622,6 @@
 				1C9618B3872558FBDE74D073 /* install_swiftformat.js */,
 				1C961AD30050B3BAC2A8EDD4 /* swiftformat.js */,
 				BF0C8C0FF1B21F5F7CE16B79 /* print_env.sh */,
-				BF0C89D7F23D82A3FF442E0B /* build_app.sh */,
-				BF0C8A261AAA42191426A587 /* run_tests.sh */,
 				BF0C84D1311C50D757DC5C2C /* l10n */,
 				BF0C8FBA2DFA42DB832AA027 /* assets */,
 			);

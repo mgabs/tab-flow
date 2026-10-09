@@ -81,7 +81,7 @@ jobs:
       - name: Ensure Generated Files Are Up To Date
         run: scripts/ensure_generated_files_are_up_to_date.sh
       - name: Run Unit Tests with Coverage
-        run: scripts/run_tests.sh
+        run: make test
       - name: Run Mutation Tests
         run: scripts/run_mutation_tests.sh
 
@@ -115,7 +115,7 @@ jobs:
         run: scripts/codesign/setup_ci_master.sh
         if: github.event_name == 'push'
       - name: Build Release Application
-        run: scripts/build_app.sh
+        run: make release
 
   release:
     name: Build & Release Stage (Build, Notarize & Publish)
@@ -150,7 +150,7 @@ jobs:
       - name: Setup Code Signing Keychains
         run: scripts/codesign/setup_ci_master.sh
       - name: Build Application
-        run: scripts/build_app.sh
+        run: make release
       - name: Package & Notarize Release
         run: scripts/package_and_notarize_release.sh
       - name: Upload Symbols to AppCenter
