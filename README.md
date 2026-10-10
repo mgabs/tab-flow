@@ -43,17 +43,14 @@
 Install TabFlow directly using [Homebrew](https://brew.sh/):
 
 ```bash
-# Tap the repository
-brew tap mgabs/tap
-
-# Install the TabFlow cask
-brew install --cask tab-flow
+brew install --cask mgabs/tap/tab-flow
 ```
 
-Or as a single command:
+Or add the tap first:
 
 ```bash
-brew install --cask mgabs/tap/tab-flow
+brew tap mgabs/tap
+brew install --cask tab-flow
 ```
 
 To update TabFlow later:

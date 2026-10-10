@@ -1,3 +1,12 @@
+# [1.0.1](https://github.com/mgabs/tab-flow/compare/v1.0.0...v1.0.1) (2026-10-10)
+
+
+### Improvements
+
+* build system: introduced unified Makefile with build, release, test, clean, run, profile, and help targets; dropped legacy shell scripts.
+* cleanup: removed dead paywall and license stubs, dead menubar popover code, unused endpoints, and legacy developer scripts.
+
+
 # [1.0.0](https://github.com/mgabs/tab-flow/compare/v11.6.0...v1.0.0) (2026-09-23)
 
 
