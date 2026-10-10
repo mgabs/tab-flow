@@ -1013,9 +1013,6 @@ class SettingsWindow: NSWindow {
         }
     }
 
-    func refreshUpgradeButton() {
-    }
-
     private func selectSection(_ section: SettingsSection, scroll: Bool, selectInSidebar: Bool = true) {
         selectedSectionId = section.id
         if selectInSidebar, let row = visibleSections.firstIndex(where: { $0.id == section.id }), sidebarTableView.selectedRow != row {

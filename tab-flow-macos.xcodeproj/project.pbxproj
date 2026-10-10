@@ -578,8 +578,6 @@
 		5FC0B4352F8F6ECB00DCC310 /* changelog.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = changelog.md; sourceTree = "<group>"; };
 		5FC0B4362F8F6EE500DCC310 /* frontpage.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = frontpage.jpg; sourceTree = "<group>"; };
 		5FC0B4372F8F6EE500DCC310 /* jetbrains.svg */ = {isa = PBXFileReference; lastKnownFileType = text; path = jetbrains.svg; sourceTree = "<group>"; };
-		5FC0B4392F8F6F6D00DCC310 /* profile.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = profile.sh; sourceTree = "<group>"; };
-		5FC0B43A2F8F6F6D00DCC310 /* run.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = run.sh; sourceTree = "<group>"; };
 		5FE2AF752EAE849F004A4AC5 /* xcbeautify */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = xcbeautify; sourceTree = "<group>"; };
 		69A2E38AF41E866D3CDE71BF /* OverrideClickResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverrideClickResolver.swift; sourceTree = "<group>"; };
 		AA0C8A000000000000000001 /* AXCallScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AXCallScheduler.swift; sourceTree = "<group>"; };
@@ -1050,15 +1048,6 @@
 			path = appearance;
 			sourceTree = "<group>";
 		};
-		5FC0B43B2F8F6F6D00DCC310 /* ai */ = {
-			isa = PBXGroup;
-			children = (
-				5FC0B4392F8F6F6D00DCC310 /* profile.sh */,
-				5FC0B43A2F8F6F6D00DCC310 /* run.sh */,
-			);
-			path = ai;
-			sourceTree = "<group>";
-		};
 		71FD1536EE94015DF0B9D6E7 /* vendors */ = {
 			isa = PBXGroup;
 			children = (
@@ -1336,7 +1325,6 @@
 		D04BA1463D2A17038222BB84 = {
 			isa = PBXGroup;
 			children = (
-				5FC0B43B2F8F6F6D00DCC310 /* ai */,
 				5FC0B4352F8F6ECB00DCC310 /* changelog.md */,
 				5F05D0E62F31441A004A95F9 /* AGENTS.md */,
 				5F05D0E72F31441A004A95F9 /* CLAUDE.md */,

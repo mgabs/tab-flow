@@ -1,4 +1,4 @@
-project: alt-tab-macos.xcodeproj
+project: tab-flow-macos.xcodeproj
 schemes:
 - Release
 index_exclude:

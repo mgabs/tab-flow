@@ -301,12 +301,6 @@ class ProTransitionManager {
         )
     }
 
-    // MARK: - Checkout helper
-
-    static func openCheckout() {
-        NSWorkspace.shared.open(URL(string: Endpoints.checkoutUrl)!)
-    }
-
     // MARK: - QA / Debug
 
     #if DEBUG
