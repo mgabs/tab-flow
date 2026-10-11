@@ -491,21 +491,10 @@ class AppearanceTab: NSObject {
         styleRow.spacing = TableGroupView.padding
         table.addRow(secondaryViews: [styleRow], secondaryViewsAlignment: .centerX)
         let sizeControl = LabelAndControl.makeSegmentedControl("appearanceSize", AppearanceSizePreference.allCases, segmentWidth: 105, extraAction: { control in
-            refreshAutoSegmentAppearance(control as! NSSegmentedControl)
             ControlsTab.syncOverrideControlsToGlobal()
             refreshAllOverrideInfoLabels()
         })
         sizeControlRef = sizeControl
-        let autoOverlay = addProBadgeToAutoSegment(sizeControl)
-        autoSegmentOverlayRef = autoOverlay
-        // AppKit re-resolves segment label/background colors on window-key transitions but doesn't
-        // notify our overlay subviews. Hook the badge's own key-state observer to trigger our
-        // resync (which calls `needsDisplay` on the icon/label so their `colorProvider`-driven
-        // `viewWillDraw` picks up the new state).
-        autoOverlay.badge.onWindowKeyChanged = { [weak sizeControl] in
-            guard let sizeControl else { return }
-            refreshAutoSegmentAppearance(sizeControl)
-        }
         table.addRow(leftText: AppearanceTab.labelSize,
             rightViews: [sizeControl, makeOverrideIcon("appearanceSizeOverride")])
         table.addRow(leftText: AppearanceTab.labelTheme,
@@ -582,19 +571,11 @@ class AppearanceTab: NSObject {
     }
 
     private static func addAfterKeysReleasedRow(_ table: TableGroupView) {
-        let proIndex = ShortcutStylePreference.allCases.firstIndex(of: .searchOnRelease)!
         let control = LabelAndControl.makeSegmentedControl("shortcutStyle", ShortcutStylePreference.allCases, segmentWidth: 105, extraAction: { control in
-            refreshShortcutStyleSegmentAppearance(control as! NSSegmentedControl)
             ControlsTab.syncOverrideControlsToGlobal()
             refreshAllOverrideInfoLabels()
         })
         shortcutStyleControlRef = control
-        let shortcutStyleOverlay = addProBadgeToShortcutStyleSegment(control, proIndex: proIndex)
-        shortcutStyleSegmentOverlayRef = shortcutStyleOverlay
-        shortcutStyleOverlay.badge.onWindowKeyChanged = { [weak control] in
-            guard let control else { return }
-            refreshShortcutStyleSegmentAppearance(control)
-        }
         table.addRow(leftText: AppearanceTab.labelShortcutStyle,
             rightViews: [control, makeOverrideIcon("shortcutStyleOverride")])
     }
@@ -696,12 +677,10 @@ class AppearanceTab: NSObject {
         if let sizeControl = sizeControlRef {
             let storedSize: AppearanceSizePreference = CachedUserDefaults.macroPref("appearanceSize", AppearanceSizePreference.allCases)
             sizeControl.selectedSegment = storedSize.index
-            refreshAutoSegmentAppearance(sizeControl)
         }
         if let control = shortcutStyleControlRef {
             let storedShortcut: ShortcutStylePreference = CachedUserDefaults.macroPref("shortcutStyle", ShortcutStylePreference.allCases)
             control.selectedSegment = storedShortcut.index
-            refreshShortcutStyleSegmentAppearance(control)
         }
     }
 

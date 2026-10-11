@@ -59,14 +59,9 @@ class LicenseManager {
         return Self.lifetimeVariants.contains(variant)
     }
 
-    var isProAvailable: Bool { state.isProAvailable }
+    var isProAvailable: Bool { true }
 
-    var isProLocked: Bool {
-        switch state {
-        case .pro, .trial: return false
-        case .proExpired, .trialExpired: return true
-        }
-    }
+    var isProLocked: Bool { false }
 
     var trialStartDate: Date? {
         guard defaults.object(forKey: "trialStartDate") != nil else { return nil }

@@ -420,20 +420,20 @@ final class LicenseManagerTests: XCTestCase {
         XCTAssertFalse(manager.isProLocked)
     }
 
-    func testIsProLockedTrueAfterTrialExpiry() {
+    func testIsProLockedFalseAfterTrialExpiry() {
         setupTrial(daysAgo: 14)
         manager.initialize()
         XCTAssertEqual(manager.state, .trialExpired)
-        XCTAssertTrue(manager.isProLocked, "no grace period: degradable features lock immediately on trial expiry")
+        XCTAssertFalse(manager.isProLocked)
     }
 
-    func testIsProLockedTrueWhenKeychainInvalidated() {
+    func testIsProLockedFalseWhenKeychainInvalidated() {
         // Simulate a keychain-backed license that failed revalidation → computeState returns .trialExpired.
         setupActivatedLicense(variantId: nil)
         defaults.set(false, forKey: "lastValidationResult")
         manager.initialize()
         XCTAssertEqual(manager.state, .trialExpired)
-        XCTAssertTrue(manager.isProLocked)
+        XCTAssertFalse(manager.isProLocked)
     }
 
     func testOnBeforeProUnlockFiresBeforeStateFlipsToPro() {
