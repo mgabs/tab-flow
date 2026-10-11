@@ -31,7 +31,7 @@ class AboutTab {
         if centerHero {
             grid.cell(atColumnIndex: 0, rowIndex: 0).xPlacement = .center
         }
-        let supportProjectCell = grid.cell(atColumnIndex: 0, rowIndex: showFeedbackButton ? 2 : 1)
+        let supportProjectCell = grid.cell(atColumnIndex: 0, rowIndex: rows.count - 1)
         supportProjectCell.xPlacement = .center
         if fitToContent {
             grid.fit()

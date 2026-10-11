@@ -426,37 +426,27 @@ final class AppearancePane {
             baseName: "appearanceStyleOverride",
             cases: AppearanceStylePreference.allCases,
             globalIndex: { Preferences.appearanceStyle.index },
-            proGatedIndices: [],
             onChange: onChange)
 
         size = ShortcutOverrideSegmented(
             baseName: "appearanceSizeOverride",
             cases: AppearanceSizePreference.allCases,
             globalIndex: { Preferences.appearanceSize.index },
-            proGatedIndices: [],
             segmentWidth: 100,
-            attachBadge: nil,
-            refreshBadge: nil,
             onChange: onChange)
 
         theme = ShortcutOverrideSegmented(
             baseName: "appearanceThemeOverride",
             cases: AppearanceThemePreference.allCases,
             globalIndex: { Preferences.appearanceTheme.index },
-            proGatedIndices: [],
             segmentWidth: 100,
-            attachBadge: nil,
-            refreshBadge: nil,
             onChange: onChange)
 
         shortcutStyle = ShortcutOverrideSegmented(
             baseName: "shortcutStyleOverride",
             cases: ShortcutStylePreference.allCases,
             globalIndex: { Preferences.shortcutStyle.index },
-            proGatedIndices: [],
             segmentWidth: 100,
-            attachBadge: nil,
-            refreshBadge: nil,
             onChange: onChange)
 
         preview = ShortcutOverrideSwitch(
@@ -527,40 +517,25 @@ final class ShortcutBoundDropdown: PopupButtonLikeSystemSettings {
 final class ShortcutOverrideSegmented {
     let segmented: NSSegmentedControl
     let unlink: NSButton
-    private let badgeOverlay: ProBadgeView.SegmentOverlay?
 
     private let baseName: String
     private let cases: [MacroPreference]
     private let globalIndex: () -> Int
-    private let proGatedIndices: Set<Int>
-    private let refreshBadge: ((NSSegmentedControl, ProBadgeView.SegmentOverlay) -> Void)?
     private let onChange: (() -> Void)?
     private var currentShortcutIndex: Int = 0
 
     init(baseName: String,
          cases: [MacroPreference],
          globalIndex: @escaping () -> Int,
-         proGatedIndices: Set<Int>,
          segmentWidth: CGFloat,
-         attachBadge: ((NSSegmentedControl) -> ProBadgeView.SegmentOverlay)?,
-         refreshBadge: ((NSSegmentedControl, ProBadgeView.SegmentOverlay) -> Void)?,
          onChange: (() -> Void)?) {
         self.baseName = baseName
         self.cases = cases
         self.globalIndex = globalIndex
-        self.proGatedIndices = proGatedIndices
-        self.refreshBadge = refreshBadge
         self.onChange = onChange
 
         segmented = LabelAndControl.makeSegmentedControl(
             Preferences.indexToName(baseName, 0), cases, segmentWidth: segmentWidth, extraAction: nil)
-        badgeOverlay = attachBadge?(segmented)
-        if let overlay = badgeOverlay {
-            overlay.badge.onWindowKeyChanged = { [weak segmented] in
-                guard let segmented, let refreshBadge else { return }
-                refreshBadge(segmented, overlay)
-            }
-        }
         unlink = ShortcutEditor.makeUnlinkButton()
 
         let weakSelf = WeakRef(self)
@@ -585,7 +560,6 @@ final class ShortcutOverrideSegmented {
         let clamped = max(0, min(displayedIndex, cases.count - 1))
         segmented.selectedSegment = clamped
         unlink.isHidden = !Preferences.hasOverride(baseName, index)
-        refreshOverlayIfNeeded()
     }
 
     private func handleClick(_ control: NSSegmentedControl) {
@@ -602,7 +576,6 @@ final class ShortcutOverrideSegmented {
             unlink.isHidden = false
             onChange?()
         }
-        refreshOverlayIfNeeded()
     }
 
     private func unlinkOverride() {
@@ -610,14 +583,7 @@ final class ShortcutOverrideSegmented {
         // Resnap to global.
         segmented.selectedSegment = max(0, min(globalIndex(), cases.count - 1))
         unlink.isHidden = true
-        refreshOverlayIfNeeded()
         onChange?()
-    }
-
-    private func refreshOverlayIfNeeded() {
-        if let overlay = badgeOverlay, let refreshBadge {
-            refreshBadge(segmented, overlay)
-        }
     }
 }
 
@@ -630,27 +596,23 @@ final class ShortcutOverrideRadios {
     private let baseName: String
     private let cases: [MacroPreference]
     private let globalIndex: () -> Int
-    private let proGatedIndices: Set<Int>
     private let onChange: (() -> Void)?
     private var currentShortcutIndex: Int = 0
 
     init(baseName: String,
          cases: [MacroPreference],
          globalIndex: @escaping () -> Int,
-         proGatedIndices: Set<Int>,
          onChange: (() -> Void)?) {
         self.baseName = baseName
         self.cases = cases
         self.globalIndex = globalIndex
-        self.proGatedIndices = proGatedIndices
         self.onChange = onChange
 
         stack = LabelAndControl.makeImageRadioButtons(
             Preferences.indexToName(baseName, 0),
             cases as! [ImageMacroPreference],
             extraAction: nil,
-            buttonSpacing: 10,
-            proGatedIndices: proGatedIndices)
+            buttonSpacing: 10)
         unlink = ShortcutEditor.makeUnlinkButton()
 
         let weakSelf = WeakRef(self)

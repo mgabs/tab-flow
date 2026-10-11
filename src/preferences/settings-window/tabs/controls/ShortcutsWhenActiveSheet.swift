@@ -54,7 +54,4 @@ class ShortcutsWhenActiveSheet: SheetWindow {
         _ = table.addRow(hideShowAppShortcut)
         return table
     }
-
-    private func addProBadgeToLeftLabel(_ rowInfo: TableGroupView.RowInfo) {
-    }
 }
