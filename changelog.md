@@ -1,3 +1,12 @@
+# [1.2.0](https://github.com/mgabs/tab-flow/compare/v1.1.0...v1.2.0) (2026-10-11)
+
+
+### Features
+
+* unlock: permanently set isProAvailable to true and isProLocked to false in LicenseManager.
+* ui: remove remaining Pro badge overlays from size and shortcut controls.
+
+
 # [1.1.0](https://github.com/mgabs/tab-flow/compare/v1.0.1...v1.1.0) (2026-10-11)
 
 
