@@ -1,4 +1,4 @@
-You can [suggest an enhancement or discuss an issue on github](https://github.com/mgabs/alt-tab-macos/issues), or use the feedback form in the app.
+You can [suggest an enhancement or discuss an issue on GitHub](https://github.com/mgabs/tab-flow/issues), or use the feedback form in the app.
 
 ## Technical overview
 
@@ -9,39 +9,34 @@ This document gives a technical overview of the project, for newcomers who want 
 This project has minimal dependency on Xcode-only features (e.g. InterfaceBuilder, Playgrounds). You can build it by doing:
 
 * `scripts/codesign/setup_local.sh` to generate a local self-signed certificate, to avoid having to re-check the `System Preferences > Security & Privacy` permissions on every build
-* Either open `alt-tab-macos.xcodeproj` with Xcode, or use the CLI: `xcodebuild -project alt-tab-macos.xcodeproj -scheme Debug` to build the .app with the `Debug` build configuration
+* Use `make debug` (or `make run`) to build and test the app using the unified Makefile, or use `xcodebuild -project tab-flow-macos.xcodeproj -scheme Debug` to build directly.
 
 ## Releasing the project
 
-Release automation (build, test, codesign, notarize, publish) is driven by [fastlane](https://fastlane.tools) (`fastlane/Fastfile`). CI runs `bundle exec fastlane release` on every push to `master`, orchestrating the same scripts under `scripts/` that were previously called directly from `.github/workflows/ci_cd.yml`.
+Release automation (build, test, codesign, notarize, publish) runs on GitHub Actions (`.github/workflows/ci_cd.yml`) upon pushing a version tag.
 
-To try a Release build locally (e.g. to test the notarization step), install the gems once with `bundle install`, then run:
+To run tests and build locally:
 
-* `bundle exec fastlane test` — runs the `Test` scheme (same as CI)
-* `bundle exec fastlane local_release` — builds the `Release` scheme; if `APPLE_ID`/`APPLE_PASSWORD`/`APPLE_TEAM_ID` (a real Developer ID certificate + app-specific password) are set, it also notarizes and staples the result. A `Local Self-Signed` cert (see above) cannot be notarized by Apple, so without those variables set the lane only builds+signs.
-
-Run `bundle exec fastlane lanes` for the full list of lanes.
+* `make test` — runs the full unit test suite
+* `make release` — builds the `Release` scheme
 
 ## Mac development
 
-Mac development ecosystem is pretty terrible in general. They keep piling on the tech stacks on top of each other, so you have C APIs, ObjC APIs, Swift APIs, Interface builder, Playgrounds, Swift UI, Mac Catalyst. All these are bridging with each other with a bunch of macros, SDKs glue, compiler flags, compatibility mode, XCode legacy build system, etc. For alt-tab, we are on Swift 5.0. Note that swift just recently started being stable, but overall any change of version breaks a lot of stuff. Swift itself is the mainstream language with the worst governance I’ve seen in modern times.
+TabFlow is written in pure Swift 5.8 with AppKit. We avoid Interface Builder, XIBs, and SwiftUI to maintain strict latency boundaries and instant summoning response.
 
-Regarding SDKs, it’s very different from other (better) ecosystems like Java. Here the SDK is bundled with XCode, and XCode is bundled with the OS. This means that from a machine running let’s say macOS 10.10, you have access to only a specific range of XCode versions (you can’t run the latest for instance), and these give you access to a specific range of SDKs (i.e. Swift + objc + c + bridges + compiler + toolchain + etc)
+Dependencies in this project are vendored under `vendor/` and consumed as local Swift Package Manager packages. Each dependency has an `update_*.sh` script under `vendor/scripts/` that re-fetches it from upstream, strips unused files, and regenerates its `Package.swift`. There is no remote dependency resolution at build time — `git clone && make build` is the full bootstrap.
 
-Documentation is abysmal. Very simple things are not documented at all, and good information is hard to find. Compared to other ecosystem I’ve worked on in the past like Android, nodejs, Java, rust, this is really a bad spot. You can truly tell Apple doesn’t care about supporting third-parties. They are in such a good position that people will struggle and just push through to deliver on their ecosystem because it is so valuable, and because they don’t have to care, they don’t. They could pay an intern to update the docs over the summer for instance, just to give you context of the lack of care we are talking about here.
-
-Dependencies in this project are vendored under `vendor/` and consumed as local Swift Package Manager packages. Each dependency has an `update_*.sh` script under `vendor/scripts/` that re-fetches it from upstream, strips unused files, and regenerates its `Package.swift`. There is no remote dependency resolution at build time — `git clone && xcodebuild` is the full bootstrap.
-
-OS APIs are quite limited for the kind of low-level, system-wide app AltTab is. This means often we just don’t have an API to do something. For instance, there is no API to ask the OS “how many Spaces does the user have?” or “Can you focus the window on Space 2?”. There are however, retro-engineered private APIs which you can call. These are not documented at all, not guaranteed to be there in future macOS releases, and prevent us from releasing AltTab on the Mac AppStore. We have tried our best to [document the ones we are using](https://github.com/mgabs/alt-tab-macos/blob/master/src/macos/api-wrappers/README.md).
+OS APIs are quite limited for the kind of low-level, system-wide app TabFlow is. This means often we just don’t have an API to do something. For instance, there is no public API to ask the OS “how many Spaces does the user have?” or “Can you focus the window on Space 2?”. There are however, retro-engineered private APIs which you can call. These are not documented by Apple, not guaranteed to be there in future macOS releases, and prevent us from releasing TabFlow on the Mac App Store. We have tried our best to document the ones we are using in `src/macos/api-wrappers/README.md`.
 
 ## Project architecture
 
-To mitigate the issues listed above, we took some measures.
+To mitigate these issues, we took specific measures.
 
-We minimize reliance on XCode, InterfaceBuilder, Playground, and other GUI tools. You can’t cut the dependency completely though as only XCode can build macOS apps. The whole UI, including the menubar, is built in code (no xib). Currently, the project has these files:
+We minimize reliance on Xcode, InterfaceBuilder, Playground, and other GUI tools. The whole UI, including the switcher and settings window, is built in code (no xib). Currently, the project has these core configuration files:
 
-* `alt-tab-macos.xcodeproj` file describing AltTab itself. It contains some settings for the app
-* `alt_tab_macos.entitlements` and `Info.plist` which are static files describing some app config for XCode
+* `tab-flow-macos.xcodeproj` file describing the Xcode project and build targets
+* `tab_flow_macos.entitlements` and `Info.plist` which describe app capabilities and permissions
+* `Makefile` for developer workflow (build, debug, release, test, run, profile, clean)
 * `vendor/` holds vendored open-source libraries (Sparkle, ShortcutRecorder, AppCenter) as local SPM packages. `vendor/scripts/update_*.sh` refresh them from upstream
 * Some `.xcconfig` files in `config/` which contain XCode settings that people typically change using XCode UI, but that I want to be version controlled
 
