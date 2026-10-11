@@ -479,8 +479,7 @@ class AppearanceTab: NSObject {
             toggleCustomizeStyleButton()
             ControlsTab.syncOverrideControlsToGlobal()
             refreshAllOverrideInfoLabels()
-        }, buttonSpacing: 10, proGatedIndices: proGatedAppearanceStyleIndices())
-        addProBadgesToStyleButtons(styleButtons)
+        }, buttonSpacing: 10, proGatedIndices: [])
         styleButtonsStack = styleButtons
         // For the style row, the control is a horizontal stack of style cards centered in the row.
         // Wrap [styleButtons, overrideIcon] in another HStack so the icon trails the cards — same
@@ -496,7 +495,6 @@ class AppearanceTab: NSObject {
             ControlsTab.syncOverrideControlsToGlobal()
             refreshAllOverrideInfoLabels()
         })
-        wrapAppearanceSizeProLockIntercept(sizeControl)
         sizeControlRef = sizeControl
         let autoOverlay = addProBadgeToAutoSegment(sizeControl)
         autoSegmentOverlayRef = autoOverlay
@@ -590,7 +588,6 @@ class AppearanceTab: NSObject {
             ControlsTab.syncOverrideControlsToGlobal()
             refreshAllOverrideInfoLabels()
         })
-        wrapShortcutStyleProLockIntercept(control, proIndex: proIndex)
         shortcutStyleControlRef = control
         let shortcutStyleOverlay = addProBadgeToShortcutStyleSegment(control, proIndex: proIndex)
         shortcutStyleSegmentOverlayRef = shortcutStyleOverlay
@@ -603,17 +600,6 @@ class AppearanceTab: NSObject {
     }
 
     private static func wrapShortcutStyleProLockIntercept(_ control: NSSegmentedControl, proIndex: Int) {
-        let original = control.onAction
-        control.onAction = { c in
-            let segmented = c as! NSSegmentedControl
-            if segmented.selectedSegment == proIndex && LicenseManager.shared.isProLocked {
-                let stored: ShortcutStylePreference = CachedUserDefaults.macroPref("shortcutStyle", ShortcutStylePreference.allCases)
-                segmented.selectedSegment = stored.index
-                refreshShortcutStyleSegmentAppearance(segmented)
-                return
-            }
-            original?(c)
-        }
     }
 
     /// Re-sync the Search-segment overlay's state. See `refreshAutoSegmentAppearance`.
@@ -679,21 +665,6 @@ class AppearanceTab: NSObject {
     /// Wraps the segmented control's onAction so clicks on the Pro-only `.auto` segment are
     /// redirected to the Upgrade tab while Pro is locked, instead of writing the preference.
     private static func wrapAppearanceSizeProLockIntercept(_ segmentedControl: NSSegmentedControl) {
-        let autoIndex = AppearanceSizePreference.allCases.count - 1
-        let original = segmentedControl.onAction
-        segmentedControl.onAction = { control in
-            let segmented = control as! NSSegmentedControl
-            if segmented.selectedSegment == autoIndex && LicenseManager.shared.isProLocked {
-                let stored: AppearanceSizePreference = CachedUserDefaults.macroPref("appearanceSize", AppearanceSizePreference.allCases)
-                segmented.selectedSegment = stored.index
-                // We bail before `original` fires, so the overlay's selection-sync (which
-                // normally runs in the `extraAction`) never executes. Trigger it manually so the
-                // badge and label colors track the reset selection.
-                refreshAutoSegmentAppearance(segmented)
-                return
-            }
-            original?(control)
-        }
     }
 
     static func addProBadgeToAutoSegment(_ segmentedControl: NSSegmentedControl) -> ProBadgeView.SegmentOverlay {
@@ -704,20 +675,11 @@ class AppearanceTab: NSObject {
     }
 
     static func addProBadgesToStyleButtons(_ stackView: NSStackView) {
-        for (index, view) in stackView.arrangedSubviews.enumerated() {
-            guard index > 0, let buttonView = view as? ImageTextButtonView else { continue }
-            let badge = ProBadgeView()
-            buttonView.addSubview(badge)
-            NSLayoutConstraint.activate([
-                badge.leadingAnchor.constraint(equalTo: buttonView.label.trailingAnchor, constant: 4),
-                badge.centerYAnchor.constraint(equalTo: buttonView.label.centerYAnchor, constant: 1),
-            ])
-        }
     }
 
-    /// Indices of `AppearanceStylePreference.allCases` that are Pro-only (everything but `.thumbnails`).
+    /// Indices of `AppearanceStylePreference.allCases` that are Pro-only (none in free TabFlow).
     static func proGatedAppearanceStyleIndices() -> Set<Int> {
-        Set(AppearanceStylePreference.allCases.enumerated().compactMap { $0.element == .thumbnails ? nil : $0.offset })
+        []
     }
 
     /// Re-sync the 3 Pro-aware controls to the currently-stored preferences and the ghost state.

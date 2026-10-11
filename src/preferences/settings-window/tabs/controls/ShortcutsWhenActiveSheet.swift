@@ -45,9 +45,8 @@ class ShortcutsWhenActiveSheet: SheetWindow {
         _ = table.addRow(focusWindowShortcut)
         _ = table.addRow(previousWindowShortcut)
         _ = table.addRow(cancelShortcut)
-        let searchRow = table.addRow(leftText: Self.labelSearch,
+        _ = table.addRow(leftText: Self.labelSearch,
             rightViews: [LabelAndControl.makeLabelWithRecorder(Self.labelSearch, "searchShortcut", Preferences.searchShortcut, labelPosition: .right)[0]])
-        addProBadgeToLeftLabel(searchRow)
         _ = table.addRow(closeWindowShortcut)
         _ = table.addRow(minDeminWindowShortcut)
         _ = table.addRow(toggleFullscreenWindowShortcut)
@@ -57,16 +56,5 @@ class ShortcutsWhenActiveSheet: SheetWindow {
     }
 
     private func addProBadgeToLeftLabel(_ rowInfo: TableGroupView.RowInfo) {
-        // Anchor the badge to the row's left label. Don't cast to a concrete view type: the label used
-        // to be an `NSTextField` but `TableGroupView.makeText` now returns a `LightLabel` (an `NSView`),
-        // and the old `as? NSTextField` silently failed that cast, dropping the badge. We only need
-        // NSView anchors, so unwrap as-is and stay agnostic to future label type changes.
-        guard let label = rowInfo.leftViews?.first else { return }
-        let badge = ProBadgeView()
-        label.superview?.addSubview(badge)
-        NSLayoutConstraint.activate([
-            badge.leadingAnchor.constraint(equalTo: label.trailingAnchor, constant: 4),
-            badge.centerYAnchor.constraint(equalTo: label.centerYAnchor, constant: 1),
-        ])
     }
 }

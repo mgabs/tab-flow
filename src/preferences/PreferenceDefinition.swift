@@ -30,17 +30,7 @@ struct PreferenceDefinition<T: MacroPreference & CaseIterable & Equatable> {
     ///    return the free equivalent.
     /// 3. Otherwise → return stored, which has been downgraded to the free equivalent already.
     func read() -> T {
-        let stored: T = CachedUserDefaults.macroPref(key, Array(T.allCases))
-        guard let gate = gate, LicenseManager.shared.isProLocked else { return stored }
-        if ProTransitionManager.shared.isFreePassSessionActive,
-           let rememberedIdx = ProTransitionState.int(gate.rememberedKey),
-           Array(T.allCases).indices.contains(rememberedIdx) {
-            return Array(T.allCases)[rememberedIdx]
-        }
-        if gate.isProValue(stored) {
-            return gate.freeEquivalent
-        }
-        return stored
+        return CachedUserDefaults.macroPref(key, Array(T.allCases))
     }
 
     /// If the stored value is currently a Pro selection, overwrite it with the free equivalent
@@ -49,11 +39,7 @@ struct PreferenceDefinition<T: MacroPreference & CaseIterable & Equatable> {
     /// in `read()`. Returns nil if no gate, or if already at the free value.
     /// Notifies observers (so Settings rows re-render immediately on lock).
     func snapshotAndDowngrade() -> Int? {
-        guard let gate = gate else { return nil }
-        let stored: T = CachedUserDefaults.macroPref(key, Array(T.allCases))
-        guard gate.isProValue(stored) else { return nil }
-        Preferences.set(key, gate.freeEquivalent.indexAsString)
-        return stored.index
+        return nil
     }
 
     /// Restore the stored value from a remembered index. Writes with `notify: false` so the

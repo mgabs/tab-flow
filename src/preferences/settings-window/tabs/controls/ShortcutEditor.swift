@@ -426,20 +426,17 @@ final class AppearancePane {
             baseName: "appearanceStyleOverride",
             cases: AppearanceStylePreference.allCases,
             globalIndex: { Preferences.appearanceStyle.index },
-            proGatedIndices: AppearanceTab.proGatedAppearanceStyleIndices(),
+            proGatedIndices: [],
             onChange: onChange)
-        AppearanceTab.addProBadgesToStyleButtons(style.stack)
 
         size = ShortcutOverrideSegmented(
             baseName: "appearanceSizeOverride",
             cases: AppearanceSizePreference.allCases,
             globalIndex: { Preferences.appearanceSize.index },
-            proGatedIndices: [AppearanceSizePreference.allCases.firstIndex(of: .auto)!],
+            proGatedIndices: [],
             segmentWidth: 100,
-            attachBadge: { c in AppearanceTab.addProBadgeToAutoSegment(c) },
-            refreshBadge: { c, overlay in
-                AppearanceTab.refreshTrailingSegmentBadge(c, proIndex: AppearanceSizePreference.allCases.firstIndex(of: .auto)!, overlay: overlay)
-            },
+            attachBadge: nil,
+            refreshBadge: nil,
             onChange: onChange)
 
         theme = ShortcutOverrideSegmented(
@@ -456,12 +453,10 @@ final class AppearancePane {
             baseName: "shortcutStyleOverride",
             cases: ShortcutStylePreference.allCases,
             globalIndex: { Preferences.shortcutStyle.index },
-            proGatedIndices: [ShortcutStylePreference.allCases.firstIndex(of: .searchOnRelease)!],
+            proGatedIndices: [],
             segmentWidth: 100,
-            attachBadge: { c in AppearanceTab.addProBadgeToShortcutStyleSegment(c, proIndex: ShortcutStylePreference.allCases.firstIndex(of: .searchOnRelease)!) },
-            refreshBadge: { c, overlay in
-                AppearanceTab.refreshTrailingSegmentBadge(c, proIndex: ShortcutStylePreference.allCases.firstIndex(of: .searchOnRelease)!, overlay: overlay)
-            },
+            attachBadge: nil,
+            refreshBadge: nil,
             onChange: onChange)
 
         preview = ShortcutOverrideSwitch(
@@ -595,15 +590,6 @@ final class ShortcutOverrideSegmented {
 
     private func handleClick(_ control: NSSegmentedControl) {
         let newIndex = control.selectedSegment
-        // Pro-lock intercept: clicking a Pro-gated segment while locked redirects to Upgrade.
-        if proGatedIndices.contains(newIndex) && LicenseManager.shared.isProLocked {
-            let stored = CachedUserDefaults.intFromMacroPref(
-                Preferences.indexToName(baseName, currentShortcutIndex), cases)
-            let revertTo = Preferences.hasOverride(baseName, currentShortcutIndex) ? stored : globalIndex()
-            control.selectedSegment = max(0, min(revertTo, cases.count - 1))
-            refreshOverlayIfNeeded()
-            return
-        }
         let key = Preferences.indexToName(baseName, currentShortcutIndex)
         let decision = OverrideClickResolver.decide(
             newIndex: newIndex,
@@ -699,14 +685,7 @@ final class ShortcutOverrideRadios {
     }
 
     private func handleClick(buttonIndex i: Int) {
-        let buttonViews = stack.arrangedSubviews.compactMap { $0 as? ImageTextButtonView }
         let key = Preferences.indexToName(baseName, currentShortcutIndex)
-        if proGatedIndices.contains(i) && LicenseManager.shared.isProLocked {
-            // Snap back to the stored value.
-            let storedIndex = Int(UserDefaults.standard.string(forKey: key) ?? "") ?? -1
-            for (j, b) in buttonViews.enumerated() { b.state = (j == storedIndex) ? .on : .off }
-            return
-        }
         let decision = OverrideClickResolver.decide(
             newIndex: i,
             hasOverride: Preferences.hasOverride(baseName, currentShortcutIndex),
