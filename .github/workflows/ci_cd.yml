@@ -166,6 +166,10 @@ jobs:
           tag_name: ${{ github.ref_name }}
           body: ${{ steps.set_release_info.outputs.body }}
           files: ${{ env.XCODE_BUILD_PATH }}/*.zip
+      - name: Update Homebrew Tap
+        run: scripts/update_homebrew_tap.sh
+        env:
+          TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN || secrets.WEBSITE_DISPATCH_TOKEN }}
       - name: Dispatch Website Update
         run: scripts/update_website.sh
         env:
