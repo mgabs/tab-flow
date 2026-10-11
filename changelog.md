@@ -1,3 +1,13 @@
+# [1.1.0](https://github.com/mgabs/tab-flow/compare/v1.0.1...v1.1.0) (2026-10-11)
+
+
+### Features
+
+* unlock all features: fully unlock App Icons, Titles, Auto size, and extra shortcuts without restriction.
+* ui: remove Pro gating checks, badges, and intercepts across Settings and switcher controls.
+* release: automate Homebrew tap cask updates on GitHub release.
+
+
 # [1.0.1](https://github.com/mgabs/tab-flow/compare/v1.0.0...v1.0.1) (2026-10-10)
 
 
