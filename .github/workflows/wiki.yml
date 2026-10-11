@@ -1,0 +1,46 @@
+name: Sync Wiki
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - 'wiki/**'
+  workflow_dispatch:
+
+jobs:
+  sync-wiki:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Sync Wiki
+        env:
+          WIKI_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN || secrets.WEBSITE_DISPATCH_TOKEN }}
+        run: |
+          set -e
+          if [ -z "$WIKI_TOKEN" ]; then
+            echo "Skipping wiki sync: No token configured."
+            exit 0
+          fi
+          
+          WIKI_URL="https://x-access-token:${WIKI_TOKEN}@github.com/${{ github.repository }}.wiki.git"
+          
+          # Clone existing wiki or handle if first page not yet created
+          if git clone "$WIKI_URL" wiki_repo 2>/dev/null; then
+            cd wiki_repo
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            rm -rf *
+            cp -R ../wiki/* .
+            if [ -n "$(git status --porcelain)" ]; then
+              git add .
+              git commit -m "docs: auto-sync wiki from ${{ github.sha }}"
+              git push
+              echo "Wiki successfully updated."
+            else
+              echo "No wiki changes to commit."
+            fi
+          else
+            echo "::warning ::GitHub Wiki repository not found or not initialized. Please click 'Create the first page' on GitHub Wiki UI first."
+          fi

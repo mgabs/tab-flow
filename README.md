@@ -10,6 +10,7 @@
 [![Release](https://img.shields.io/github/v/release/mgabs/tab-flow?color=007AFF&label=Release&logo=apple)](https://github.com/mgabs/tab-flow/releases/latest)
 [![macOS](https://img.shields.io/badge/macOS-12.0%2B-blue?logo=apple)](https://github.com/mgabs/tab-flow)
 [![Homebrew](https://img.shields.io/badge/homebrew-tabflow-orange?logo=homebrew)](https://github.com/mgabs/homebrew-tap)
+[![Wiki](https://img.shields.io/badge/docs-wiki-blueviolet?logo=gitbook)](https://github.com/mgabs/tab-flow/wiki)
 [![License](https://img.shields.io/github/license/mgabs/tab-flow?color=green)](LICENSE)
 
 </div>
