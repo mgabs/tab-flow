@@ -53,9 +53,7 @@ struct PreferenceDefinition<T: MacroPreference & CaseIterable & Equatable> {
     /// True when the stored value is a Pro selection, regardless of current lock state. Used by
     /// `PreferencesEvents.preferenceChanged` to decide whether a setter should bounce to Upgrade.
     func isStoredValuePro() -> Bool {
-        guard let gate = gate else { return false }
-        let stored: T = CachedUserDefaults.macroPref(key, Array(T.allCases))
-        return gate.isProValue(stored)
+        false
     }
 }
 
@@ -92,7 +90,7 @@ enum ProGatedPreferences {
         gate: PreferenceGate(
             freeEquivalent: .thumbnails,
             rememberedKey: "rememberedAppearanceStyle",
-            isProValue: { $0 != .thumbnails }))
+            isProValue: { _ in false }))
 
     static let appearanceSize = PreferenceDefinition<AppearanceSizePreference>(
         key: "appearanceSize",
@@ -100,7 +98,7 @@ enum ProGatedPreferences {
         gate: PreferenceGate(
             freeEquivalent: .medium,
             rememberedKey: "rememberedAppearanceSize",
-            isProValue: { $0 == .auto }))
+            isProValue: { _ in false }))
 
     static let shortcutStyle = PreferenceDefinition<ShortcutStylePreference>(
         key: "shortcutStyle",
@@ -108,7 +106,7 @@ enum ProGatedPreferences {
         gate: PreferenceGate(
             freeEquivalent: .doNothingOnRelease,
             rememberedKey: "rememberedShortcutStyle",
-            isProValue: { $0 == .searchOnRelease }))
+            isProValue: { _ in false }))
 
     // Per-shortcut overrides for shortcut 0 (the only index reachable while Pro is locked, since
     // extra shortcuts >= 1 are hard-gated at trigger time). Snapshot/restore plumbing mirrors the
@@ -120,7 +118,7 @@ enum ProGatedPreferences {
         gate: PreferenceGate(
             freeEquivalent: .thumbnails,
             rememberedKey: "rememberedAppearanceStyleOverride",
-            isProValue: { $0 != .thumbnails }))
+            isProValue: { _ in false }))
 
     static let appearanceSizeOverride0 = PreferenceDefinition<AppearanceSizePreference>(
         key: "appearanceSizeOverride",
@@ -128,7 +126,7 @@ enum ProGatedPreferences {
         gate: PreferenceGate(
             freeEquivalent: .medium,
             rememberedKey: "rememberedAppearanceSizeOverride",
-            isProValue: { $0 == .auto }))
+            isProValue: { _ in false }))
 
     static let shortcutStyleOverride0 = PreferenceDefinition<ShortcutStylePreference>(
         key: "shortcutStyleOverride",
@@ -136,7 +134,7 @@ enum ProGatedPreferences {
         gate: PreferenceGate(
             freeEquivalent: .doNothingOnRelease,
             rememberedKey: "rememberedShortcutStyleOverride",
-            isProValue: { $0 == .searchOnRelease }))
+            isProValue: { _ in false }))
 
     /// All Pro-gated preferences as type-erased descriptors. Iterated by `ProTransitionState`
     /// on lock / unlock.

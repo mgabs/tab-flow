@@ -433,8 +433,11 @@ class FeedbackWindow: NSWindow {
         alert.alertStyle = .warning
         alert.messageText = NSLocalizedString("Couldn't submit feedback", comment: "")
         alert.informativeText = NSLocalizedString("The server didn't accept the submission. Check your internet connection and try again — your draft is preserved.", comment: "")
-        alert.addButton(withTitle: NSLocalizedString("OK", comment: ""))
-        alert.runModal()
+        alert.addButton(withTitle: NSLocalizedString("Open on GitHub", comment: ""))
+        alert.addButton(withTitle: NSLocalizedString("Cancel", comment: ""))
+        if alert.runModal() == .alertFirstButtonReturn {
+            NSWorkspace.shared.open(URL(string: App.repository + "/issues/new")!)
+        }
     }
 
     /// The backend owns the final GitHub issue presentation — we just hand it the raw

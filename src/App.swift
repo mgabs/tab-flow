@@ -13,7 +13,7 @@ class App: AppCenterApplication {
     static let name = Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as! String
     static let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
     static let licence = Bundle.main.object(forInfoDictionaryKey: "NSHumanReadableCopyright") as! String
-    static let repository = "https://github.com/mgabs/tabflow-macos"
+    static let repository = "https://github.com/mgabs/tab-flow"
     static let appIconReps = CGImage.allNamed("app.icns")
 
     static func appIcon(for size: NSSize) -> CGImage {
@@ -491,7 +491,6 @@ class App: AppCenterApplication {
         if QAMenu.graphEnabled { DebugMenu.setEnabled(true) }
         #endif
         UsageStats.prune()
-        ProTransitionManager.shared.onAction = { _ in }
         ProTransitionManager.shared.onAppLaunchComplete()
         Logger.info { "Finished launching AltTab" }
     }
@@ -536,7 +535,6 @@ extension App: NSApplicationDelegate {
         PreferencesPersistenceCheck.runInBackground()
         LicenseManager.shared.onBeforeProUnlock = { ProTransitionManager.shared.onProUnlocked() }
         LicenseManager.shared.onStateChanged = { state in
-            syncLicenseCookie(state: state)
             ProTransitionManager.shared.onLicenseStateChanged()
             App.resetPreferencesDependentComponents()
             // `isProLocked` reads from state, so a state change implicitly changes the lock.

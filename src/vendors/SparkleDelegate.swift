@@ -34,7 +34,6 @@ class SparkleDelegate: NSObject, SPUUpdaterDelegate {
             ["key": "macos", "value": "\(v.majorVersion).\(v.minorVersion).\(v.patchVersion)"],
             ["key": "arch", "value": Sysctl.run("hw.machine")],
             ["key": "lang", "value": Locale.preferredLanguages.first ?? "unknown"],
-            ["key": "tier", "value": LicenseManager.shared.state.appcastTier],
         ]
     }
 
@@ -43,6 +42,11 @@ class SparkleDelegate: NSObject, SPUUpdaterDelegate {
     }
 
     func updaterDidNotFindUpdate(_ updater: SPUUpdater) {
+        store(.upToDate)
+    }
+
+    func updater(_ updater: SPUUpdater, didAbortWithError error: Error) {
+        Logger.info { "Sparkle update check aborted: \(error)" }
         store(.upToDate)
     }
 

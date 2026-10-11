@@ -1,3 +1,14 @@
+# [1.3.0](https://github.com/mgabs/tab-flow/compare/v1.2.0...v1.3.0) (2026-10-11)
+
+
+### Bug Fixes
+
+* updater: point Sparkle appcast to raw GitHub releases and handle check aborts gracefully.
+* support: point project and support links to GitHub repository.
+* crash: fix out-of-bounds row crash when opening About window.
+* preferences: completely strip Pro gates and dead code for all appearance styles.
+
+
 # [1.2.0](https://github.com/mgabs/tab-flow/compare/v1.1.0...v1.2.0) (2026-10-11)
 
 

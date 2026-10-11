@@ -414,9 +414,7 @@ class AppearanceTab: NSObject {
     // References used by `refreshProLockUi()` to update Pro-lock affordances while Settings stays open.
     private static weak var styleButtonsStack: NSStackView?
     private static weak var sizeControlRef: NSSegmentedControl?
-    private static var autoSegmentOverlayRef: ProBadgeView.SegmentOverlay?
     private static weak var shortcutStyleControlRef: NSSegmentedControl?
-    private static var shortcutStyleSegmentOverlayRef: ProBadgeView.SegmentOverlay?
     private static var proLockObserver: NSObjectProtocol?
 
     /// One icon button per overridable preference, parked at the trailing edge of each row (same
@@ -452,8 +450,6 @@ class AppearanceTab: NSObject {
         animationsButton = nil
         customizeStyleSheet = nil
         animationsSheet = nil
-        autoSegmentOverlayRef = nil
-        shortcutStyleSegmentOverlayRef = nil
         overrideInfoIcons.removeAll()
     }
 
@@ -479,7 +475,7 @@ class AppearanceTab: NSObject {
             toggleCustomizeStyleButton()
             ControlsTab.syncOverrideControlsToGlobal()
             refreshAllOverrideInfoLabels()
-        }, buttonSpacing: 10, proGatedIndices: [])
+        }, buttonSpacing: 10)
         styleButtonsStack = styleButtons
         // For the style row, the control is a horizontal stack of style cards centered in the row.
         // Wrap [styleButtons, overrideIcon] in another HStack so the icon trails the cards — same
@@ -580,25 +576,7 @@ class AppearanceTab: NSObject {
             rightViews: [control, makeOverrideIcon("shortcutStyleOverride")])
     }
 
-    private static func wrapShortcutStyleProLockIntercept(_ control: NSSegmentedControl, proIndex: Int) {
-    }
 
-    /// Re-sync the Search-segment overlay's state. See `refreshAutoSegmentAppearance`.
-    private static func refreshShortcutStyleSegmentAppearance(_ segmentedControl: NSSegmentedControl) {
-        guard let overlay = shortcutStyleSegmentOverlayRef else { return }
-        refreshTrailingSegmentBadge(segmentedControl, proIndex: ShortcutStylePreference.allCases.firstIndex(of: .searchOnRelease)!, overlay: overlay)
-    }
-
-    static func addProBadgeToShortcutStyleSegment(_ segmentedControl: NSSegmentedControl, proIndex: Int) -> ProBadgeView.SegmentOverlay {
-        return ProBadgeView.attach(to: segmentedControl,
-            segmentIndex: proIndex,
-            label: ShortcutStylePreference.searchOnRelease.localizedString,
-            symbol: ShortcutStylePreference.searchOnRelease.symbol)
-    }
-
-    static func refreshTrailingSegmentBadge(_ segmentedControl: NSSegmentedControl, proIndex: Int, overlay: ProBadgeView.SegmentOverlay) {
-        ProBadgeView.refreshSelection(in: segmentedControl, proIndex: proIndex, overlay: overlay)
-    }
 
     private static func addPreviewSelectedWindowRow(_ table: TableGroupView) {
         let switchControl = LabelAndControl.makeSwitch("previewFocusedWindow", extraAction: { _ in
@@ -636,32 +614,7 @@ class AppearanceTab: NSObject {
         SettingsWindow.shared.beginSheetWithSearchHighlight(animationsSheet)
     }
 
-    /// Re-sync the Auto-segment overlay's state (badge + icon/label color). Called on click,
-    /// Pro-lock transitions, programmatic resync, and window key-state changes.
-    private static func refreshAutoSegmentAppearance(_ segmentedControl: NSSegmentedControl) {
-        guard let overlay = autoSegmentOverlayRef else { return }
-        refreshTrailingSegmentBadge(segmentedControl, proIndex: AppearanceSizePreference.allCases.count - 1, overlay: overlay)
-    }
 
-    /// Wraps the segmented control's onAction so clicks on the Pro-only `.auto` segment are
-    /// redirected to the Upgrade tab while Pro is locked, instead of writing the preference.
-    private static func wrapAppearanceSizeProLockIntercept(_ segmentedControl: NSSegmentedControl) {
-    }
-
-    static func addProBadgeToAutoSegment(_ segmentedControl: NSSegmentedControl) -> ProBadgeView.SegmentOverlay {
-        return ProBadgeView.attach(to: segmentedControl,
-            segmentIndex: AppearanceSizePreference.allCases.count - 1,
-            label: AppearanceSizePreference.auto.localizedString,
-            symbol: AppearanceSizePreference.auto.symbol)
-    }
-
-    static func addProBadgesToStyleButtons(_ stackView: NSStackView) {
-    }
-
-    /// Indices of `AppearanceStylePreference.allCases` that are Pro-only (none in free TabFlow).
-    static func proGatedAppearanceStyleIndices() -> Set<Int> {
-        []
-    }
 
     /// Re-sync the 3 Pro-aware controls to the currently-stored preferences and the ghost state.
     /// Called when `ProTransitionManager.proLockStateDidChangeNotification` fires so a live Settings
