@@ -685,6 +685,7 @@ final class ShortcutOverrideRadios {
     }
 
     private func handleClick(buttonIndex i: Int) {
+        let buttonViews = stack.arrangedSubviews.compactMap { $0 as? ImageTextButtonView }
         let key = Preferences.indexToName(baseName, currentShortcutIndex)
         let decision = OverrideClickResolver.decide(
             newIndex: i,
